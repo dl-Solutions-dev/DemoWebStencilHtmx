@@ -1,3 +1,20 @@
+(* C2PP
+  ***************************************************************************
+
+  Copyright D. LEBLANC 2025
+  Ce programme peut être copié et utilisé librement.
+
+  ***************************************************************************
+
+  Ce projet est une démo des possibilités combinés des webstencils et de
+  HTMX.
+
+  ***************************************************************************
+  File last update : 2025-07-02T23:34:44.000+02:00
+  Signature : 688c77ce6b65b539e848d84171d5c38a1d6c7c96
+  ***************************************************************************
+*)
+
 unit UDMSession;
 
 interface
@@ -24,7 +41,7 @@ uses
   Data.DB,
   FireDAC.Comp.DataSet,
   FireDAC.Comp.Client,
-  System.SyncObjs;
+  System.SyncObjs, Datasnap.DBClient;
 
 type
   TDMSession = class( TDataModule )
@@ -43,6 +60,10 @@ type
     IntegerField1: TIntegerField;
     WideStringField1: TWideStringField;
     WideStringField2: TWideStringField;
+    CdsMenu: TClientDataSet;
+    CdsMenuLibelle: TStringField;
+    CdsMenuIcone: TStringField;
+    CdsMenuUrl: TStringField;
     procedure DataModuleCreate( Sender: TObject );
     procedure DataModuleDestroy( Sender: TObject );
   private
@@ -67,6 +88,8 @@ procedure TDMSession.DataModuleCreate( Sender: TObject );
 begin
   FDManager.Active := True;
   FCritical := TCriticalSection.Create;
+
+  CdsMenu.CreateDataSet;
 end;
 
 procedure TDMSession.DataModuleDestroy( Sender: TObject );

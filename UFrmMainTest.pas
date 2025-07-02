@@ -1,3 +1,20 @@
+(* C2PP
+  ***************************************************************************
+
+  Copyright D. LEBLANC 2025
+  Ce programme peut être copié et utilisé librement.
+
+  ***************************************************************************
+
+  Ce projet est une démo des possibilités combinés des webstencils et de
+  HTMX.
+
+  ***************************************************************************
+  File last update : 2025-06-29T14:10:24.000+02:00
+  Signature : 532d62172cb9f4ec46ca2d178686279d54c954a6
+  ***************************************************************************
+*)
+
 unit UFrmMainTest;
 
 interface

@@ -1,4 +1,21 @@
-﻿unit utils.ClassHelpers;
+﻿(* C2PP
+  ***************************************************************************
+
+  Copyright D. LEBLANC 2025
+  Ce programme peut être copié et utilisé librement.
+
+  ***************************************************************************
+
+  Ce projet est une démo des possibilités combinés des webstencils et de
+  HTMX.
+
+  ***************************************************************************
+  File last update : 2024-12-02T07:13:38.000+01:00
+  Signature : d6bfc0e581c774400da55a334cf56a120cdefebc
+  ***************************************************************************
+*)
+
+unit utils.ClassHelpers;
 
 interface
 

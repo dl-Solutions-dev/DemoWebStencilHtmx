@@ -147,6 +147,7 @@
         <DCCReference Include="utils.ClassHelpers.pas"/>
         <DCCReference Include="UListeUsersController.pas"/>
         <DCCReference Include="uInvokerActions.pas"/>
+        <DCCReference Include="UMenu.pas"/>
         <None Include="ReadMe.md"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
@@ -189,7 +190,7 @@
                 <WelcomePageFolder/>
             </Delphi.Personality>
             <Deployment Version="5">
-                <DeployFile LocalName="Untitled1.md" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="ReadMe.md" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>

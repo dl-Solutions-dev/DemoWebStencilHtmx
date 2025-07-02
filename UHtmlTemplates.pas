@@ -1,3 +1,20 @@
+(* C2PP
+  ***************************************************************************
+
+  Copyright D. LEBLANC 2025
+  Ce programme peut être copié et utilisé librement.
+
+  ***************************************************************************
+
+  Ce projet est une démo des possibilités combinés des webstencils et de
+  HTMX.
+
+  ***************************************************************************
+  File last update : 2025-07-01T23:19:20.000+02:00
+  Signature : 28d773d59df3c75f651e937f4f768767831c576e
+  ***************************************************************************
+*)
+
 unit UHtmlTemplates;
 
 interface

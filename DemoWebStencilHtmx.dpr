@@ -1,3 +1,20 @@
+﻿(* C2PP
+  ***************************************************************************
+
+  Copyright D. LEBLANC 2025
+  Ce programme peut être copié et utilisé librement.
+
+  ***************************************************************************
+
+  Ce projet est une démo des possibilités combinés des webstencils et de
+  HTMX.
+
+  ***************************************************************************
+  File last update : 2025-07-02T23:27:48.000+02:00
+  Signature : cfd6f60e3b0ce7e51cba49ca3111df21c1360ca4
+  ***************************************************************************
+*)
+
 program DemoWebStencilHtmx;
 {$APPTYPE GUI}
 
@@ -15,7 +32,8 @@ uses
   uInterfaces in 'uInterfaces.pas',
   utils.ClassHelpers in 'utils.ClassHelpers.pas',
   UListeUsersController in 'UListeUsersController.pas',
-  uInvokerActions in 'uInvokerActions.pas';
+  uInvokerActions in 'uInvokerActions.pas',
+  UMenu in 'UMenu.pas';
 
 {$R *.res}
 

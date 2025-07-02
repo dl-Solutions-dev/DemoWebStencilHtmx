@@ -1,3 +1,20 @@
+﻿(* C2PP
+  ***************************************************************************
+
+  Copyright D. LEBLANC 2025
+  Ce programme peut être copié et utilisé librement.
+
+  ***************************************************************************
+
+  Ce projet est une démo des possibilités combinés des webstencils et de
+  HTMX.
+
+  ***************************************************************************
+  File last update : 2025-07-02T21:47:04.000+02:00
+  Signature : 9e856112c2d57d69c698eac66173b16245a1c849
+  ***************************************************************************
+*)
+
 unit USessionManager;
 
 interface

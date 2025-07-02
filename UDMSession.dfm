@@ -108,4 +108,22 @@ object DMSession: TDMSession
       Size = 100
     end
   end
+  object CdsMenu: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 232
+    Top = 520
+    object CdsMenuLibelle: TStringField
+      FieldName = 'Libelle'
+      Size = 500
+    end
+    object CdsMenuIcone: TStringField
+      FieldName = 'Icone'
+      Size = 50
+    end
+    object CdsMenuUrl: TStringField
+      FieldName = 'Url'
+      Size = 500
+    end
+  end
 end
