@@ -1,0 +1,72 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{9B6C40FC-9895-495D-B46E-2FF0E62F9E1F}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="..\..\Demos\WebStencil-demo\CustListWebStencil.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="DemoWebStencilHtmx.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\Demos\DelphiBlogExamples-main\Delphi and HTMX - part 2\HTMXDemoPart2.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\Demos\WebStencilsDemos-main\WebStencilsDemoProject\WebStencilsDemo.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="CustListWebStencil">
+        <MSBuild Projects="..\..\Demos\WebStencil-demo\CustListWebStencil.dproj"/>
+    </Target>
+    <Target Name="CustListWebStencil:Clean">
+        <MSBuild Projects="..\..\Demos\WebStencil-demo\CustListWebStencil.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CustListWebStencil:Make">
+        <MSBuild Projects="..\..\Demos\WebStencil-demo\CustListWebStencil.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DemoWebStencilHtmx">
+        <MSBuild Projects="DemoWebStencilHtmx.dproj"/>
+    </Target>
+    <Target Name="DemoWebStencilHtmx:Clean">
+        <MSBuild Projects="DemoWebStencilHtmx.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DemoWebStencilHtmx:Make">
+        <MSBuild Projects="DemoWebStencilHtmx.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="HTMXDemoPart2">
+        <MSBuild Projects="..\..\Demos\DelphiBlogExamples-main\Delphi and HTMX - part 2\HTMXDemoPart2.dproj"/>
+    </Target>
+    <Target Name="HTMXDemoPart2:Clean">
+        <MSBuild Projects="..\..\Demos\DelphiBlogExamples-main\Delphi and HTMX - part 2\HTMXDemoPart2.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="HTMXDemoPart2:Make">
+        <MSBuild Projects="..\..\Demos\DelphiBlogExamples-main\Delphi and HTMX - part 2\HTMXDemoPart2.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="WebStencilsDemo">
+        <MSBuild Projects="..\..\Demos\WebStencilsDemos-main\WebStencilsDemoProject\WebStencilsDemo.dproj"/>
+    </Target>
+    <Target Name="WebStencilsDemo:Clean">
+        <MSBuild Projects="..\..\Demos\WebStencilsDemos-main\WebStencilsDemoProject\WebStencilsDemo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="WebStencilsDemo:Make">
+        <MSBuild Projects="..\..\Demos\WebStencilsDemos-main\WebStencilsDemoProject\WebStencilsDemo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="CustListWebStencil;DemoWebStencilHtmx;HTMXDemoPart2;WebStencilsDemo"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="CustListWebStencil:Clean;DemoWebStencilHtmx:Clean;HTMXDemoPart2:Clean;WebStencilsDemo:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="CustListWebStencil:Make;DemoWebStencilHtmx:Make;HTMXDemoPart2:Make;WebStencilsDemo:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

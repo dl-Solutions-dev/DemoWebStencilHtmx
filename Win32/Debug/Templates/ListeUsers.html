@@ -1,0 +1,72 @@
+@LayoutPage Templates/IndexTemplate.html
+
+<h1>Liste utilisateurs</h1>
+<br/>
+NoSession : @App.SessionNo&nbsp;démarrée le : @App.StartDate
+<script>
+function confirmDelete(aForm){
+	if (confirm("Etes-vous certains de vouloir supprimer cet utilisateur ?")){
+		aForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
+	}
+}
+</script>
+
+<div class="container">
+
+	<Table  class="table">
+		<thead class="table-light">
+		<tr>
+		  <th scope="col"></th>
+		  <th scope="col"></th>
+		  <th scope="col">ID</th>
+		  <th scope="col">Prénom</th>
+		  <th scope="col">Nom</th>
+		</tr>
+		</thead>
+		<tbody id="TableUsers" hx-target="closest tr" hx-swap="outerHTML">
+		@foreach UserList {
+			<tr id="Row@loop.ID_USER">
+			  <td>
+			  
+					<a href="#" hx-delete="/DeleteUser?Session=@App.SessionNo&id=@loop.ID_USER" hx-confirm="Etes-vous certains de vouloir supprimer cet utilisateur ?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+						<span class="material-icons">
+						delete
+						</span>
+					</a>
+			  </td>
+			  <td>
+				<button class="btn btn-warning"
+						hx-get="/EditLineMode?Session=@App.SessionNo&id=@loop.ID_USER&col=1"
+						hx-trigger="edit"
+						onClick="let editing = document.querySelector('.editing')
+								 if(editing) {
+								   Swal.fire({title: 'Already Editing',
+											  showCancelButton: true,
+											  confirmButtonText: 'Yep, Edit This Row!',
+											  text:'Une ligne est déjà en cours d&#x2019;édition, voulez-vous continuer ?'})
+								   .then((result) => {
+										if(result.isConfirmed) {
+										   htmx.trigger(editing, 'Cancel')
+										   htmx.trigger(this, 'edit')
+										}
+									})
+								 } else {
+									htmx.trigger(this, 'edit')
+								 }">
+				  Edit
+				</button>
+			  </td>
+			  <td>@loop.ID_USER</td>
+			  <td id="col1@loop.ID_USER">
+				@loop.PRENOM
+			  </td>
+			  <td  id="col2@loop.ID_USER">
+				@loop.NOM
+			  </td>
+			</tr>
+		}
+		</tbody>
+	</table>
+	
+	<button type="button" id="btnAddUser" class="btn btn-primary" hx-get="/AddUser?Session=@App.SessionNo" hx-target="#TableUsers" hx-swap="beforeend">Add user</button>
+</div>
