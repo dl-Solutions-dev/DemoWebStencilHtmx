@@ -7,6 +7,7 @@ object WMMain: TWMMain
       PathInfo = '/'
       OnAction = WMMainDefaultHandlerAction
     end>
+  BeforeDispatch = WebModuleBeforeDispatch
   Height = 460
   Width = 830
   PixelsPerInch = 192

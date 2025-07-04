@@ -4,15 +4,16 @@ object DMSession: TDMSession
   Height = 1920
   Width = 2560
   PixelsPerInch = 192
-  object Export_sqlConnection: TFDConnection
+  object CnxExport: TFDConnection
     Params.Strings = (
       'ConnectionDef=EXPORT_SQL')
+    Connected = True
     LoginPrompt = False
     Left = 231
     Top = 59
   end
   object QryUsers: TFDQuery
-    Connection = Export_sqlConnection
+    Connection = CnxExport
     SQL.Strings = (
       'SELECT * FROM EXPORT_SQL_USERS'
       'order by NOM')
@@ -35,7 +36,7 @@ object DMSession: TDMSession
     end
   end
   object QryUser: TFDQuery
-    Connection = Export_sqlConnection
+    Connection = CnxExport
     SQL.Strings = (
       'select * from EXPORT_SQL_USERS'
       'where ID_USER = :ID_USER')
@@ -65,7 +66,7 @@ object DMSession: TDMSession
     end
   end
   object QrySeq: TFDQuery
-    Connection = Export_sqlConnection
+    Connection = CnxExport
     SQL.Strings = (
       'SELECT NEXT VALUE FOR GEN_USER_ID as "NEWID"  FROM RDB$DATABASE')
     Left = 232
@@ -79,7 +80,7 @@ object DMSession: TDMSession
     end
   end
   object QryUserCancel: TFDQuery
-    Connection = Export_sqlConnection
+    Connection = CnxExport
     SQL.Strings = (
       'select * from EXPORT_SQL_USERS'
       'where ID_USER = :ID_USER')

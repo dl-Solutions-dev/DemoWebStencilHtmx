@@ -45,7 +45,7 @@ uses
 
 type
   TDMSession = class( TDataModule )
-    Export_sqlConnection: TFDConnection;
+    CnxExport: TFDConnection;
     QryUsers: TFDQuery;
     QryUsersID_USER: TIntegerField;
     QryUsersNOM: TWideStringField;

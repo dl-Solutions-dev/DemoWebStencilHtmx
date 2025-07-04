@@ -33,6 +33,7 @@ type
     FSessionNo: string;
     FStartDate: TDateTime;
     FWebStencil: TWebStencilsEngine;
+    procedure SetSessionNo( const Value: string );
   public
     procedure ListeUsers( Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean );
     procedure ApplyUser( Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean );
@@ -44,6 +45,8 @@ type
     procedure CancelAddUser( Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean );
 
     procedure InitializeActions( aWebModule: TWebModule; aWebStencil: TWebStencilsEngine ); override;
+
+    property SessionNo: string read FSessionNo write SetSessionNo;
   end;
 
 implementation
@@ -58,7 +61,8 @@ uses
   UConsts,
   UHtmlTemplates,
   uInvokerActions,
-  UDMSession;
+  UDMSession,
+  UWMMain;
 
 procedure TListeUsers.AddUser( Sender: TObject; Request: TWebRequest;
   Response: TWebResponse; var Handled: Boolean );
@@ -67,7 +71,7 @@ var
 begin
   if ( Request.QueryFields.Values[ 'Session' ] <> '' ) then
   begin
-    LSession := TSessionManager.GetInstance.GetSession( Request.QueryFields.Values[ 'Session' ] );
+    LSession := TWMMain( FWebModule ).UserSession;
 
     if Assigned( LSession ) then
     begin
@@ -94,7 +98,7 @@ var
 begin
   if ( Request.QueryFields.Values[ 'Session' ] <> '' ) then
   begin
-    LSession := TSessionManager.GetInstance.GetSession( Request.QueryFields.Values[ 'Session' ] );
+    LSession := TWMMain( FWebModule ).UserSession;
 
     if Assigned( LSession ) then
     begin
@@ -127,21 +131,17 @@ var
   LId: Integer;
   LIds: string;
 begin
-  if ( Request.QueryFields.Values[ 'Session' ] = '' ) then
-  begin
-    FSessionNo := TSessionManager.GetInstance.CreateSession;
-  end;
-
-  LSession := TSessionManager.GetInstance.GetSession( Request.QueryFields.Values[ 'Session' ] );
+  LSession := TWMMain( FWebModule ).UserSession;
   FSessionNo := LSession.IdSession;
 
   FStartDate := LSession.StartDate;
 
-  if ( Request.QueryFields.Values[ 'Id' ] <> '' ) and ( TryStrToInt( Request.QueryFields.Values[ 'Id' ], LId ) ) { and
-    ( TryStrToInt( Request.QueryFields.Values[ 'Col' ], LCol ) ) } then
+  if ( Request.QueryFields.Values[ 'Id' ] <> '' ) and ( TryStrToInt( Request.QueryFields.Values[ 'Id' ], LId ) ) then
   begin
     if LId <> -1 then
     begin
+      LSession.DMSession.CnxExport.StartTransaction;
+
       LSession.DMSession.QryUser.close;
       LSession.DMSession.QryUser.ParamByName( 'ID_USER' ).AsInteger := LId;
       LSession.DMSession.QryUser.Open;
@@ -149,8 +149,15 @@ begin
 
       LSession.DMSession.QryUserPRENOM.Value := Request.ContentFields.Values[ 'Prenom' ];
       LSession.DMSession.QryUserNOM.Value := Request.ContentFields.Values[ 'Nom' ];
-
-      LSession.DMSession.QryUser.Post;
+      try
+        LSession.DMSession.QryUser.Post;
+        LSession.DMSession.CnxExport.Commit;
+      except
+        on e: Exception do
+        begin
+          LSession.DMSession.CnxExport.Rollback;
+        end;
+      end;
 
       LIds := Request.QueryFields.Values[ 'Id' ];
 
@@ -177,8 +184,7 @@ var
 begin
   if ( Request.QueryFields.Values[ 'Session' ] <> '' ) then
   begin
-    LSession := TSessionManager.GetInstance.GetSession( Request.QueryFields.Values[ 'Session' ] );
-
+    LSession := TWMMain( FWebModule ).UserSession;
     if Assigned( LSession ) then
     begin
       if TryStrToInt( Request.QueryFields.Values[ 'Id' ], LId ) then
@@ -222,7 +228,7 @@ var
 begin
   if ( Request.QueryFields.Values[ 'Session' ] <> '' ) then
   begin
-    LSession := TSessionManager.GetInstance.GetSession( Request.QueryFields.Values[ 'Session' ] );
+    LSession := TWMMain( FWebModule ).UserSession;
 
     if Assigned( LSession ) then
     begin
@@ -266,7 +272,7 @@ var
 begin
   if ( Request.QueryFields.Values[ 'Session' ] <> '' ) then
   begin
-    LSession := TSessionManager.GetInstance.GetSession( Request.QueryFields.Values[ 'Session' ] );
+    LSession := TWMMain( FWebModule ).UserSession;
 
     if Assigned( LSession ) then
     begin
@@ -297,6 +303,8 @@ end;
 procedure TListeUsers.InitializeActions( aWebModule: TWebModule;
   aWebStencil: TWebStencilsEngine );
 begin
+  inherited;
+
   FWebStencil := aWebStencil;
 
   aWebModule.AddRoutes( [
@@ -317,12 +325,8 @@ var
   LSession: TUserSession;
   LProcessorEngine: TWebStencilsProcessor;
 begin
-  if ( Request.QueryFields.Values[ 'Session' ] = '' ) then
-  begin
-    FSessionNo := TSessionManager.GetInstance.CreateSession;
-  end;
+  LSession := TWMMain( FWebModule ).UserSession;
 
-  LSession := TSessionManager.GetInstance.GetSession( Request.QueryFields.Values[ 'Session' ] );
   if Assigned( LSession ) then
   begin
     LProcessorEngine := TWebStencilsProcessor.Create( nil );
@@ -330,10 +334,11 @@ begin
     LProcessorEngine.InputFileName := './templates/ListeUsers.html';
     LProcessorEngine.PathTemplate := './Templates';
 
-    FSessionNo := LSession.IdSession;
+    FWebStencil.AddVar( 'Session', LSession, False );
 
     FStartDate := LSession.StartDate;
 
+    LSession.DMSession.CnxExport.Rollback;
     LSession.DMSession.QryUsers.close;
     LSession.DMSession.QryUsers.Open;
 
@@ -347,6 +352,11 @@ begin
   begin
     Response.Content := 'Session non trouvée.';
   end;
+end;
+
+procedure TListeUsers.SetSessionNo( const Value: string );
+begin
+  FSessionNo := Value;
 end;
 
 initialization

@@ -39,20 +39,25 @@ type
     procedure WebModuleCreate( Sender: TObject );
     procedure WMMainDefaultHandlerAction( Sender: TObject; Request: TWebRequest;
       Response: TWebResponse; var Handled: Boolean );
+    procedure WebModuleBeforeDispatch(Sender: TObject; Request: TWebRequest;
+      Response: TWebResponse; var Handled: Boolean);
   private
     { Déclarations privées }
     FTitle: string;
     FSessionNo: string;
     FStartDate: TDateTime;
+    FUserSession: TUserSession;
 
     procedure SetTitle( const Value: string );
     procedure SetSessionNo( const Value: string );
     procedure SetStartDate( const Value: TDateTime );
+    procedure SetUserSession(const Value: TUserSession);
   public
     { Déclarations publiques }
     property Title: string read FTitle write SetTitle;
     property SessionNo: string read FSessionNo write SetSessionNo;
     property StartDate: TDateTime read FStartDate write SetStartDate;
+    property UserSession:TUserSession read FUserSession write SetUserSession;
   end;
 
 var
@@ -82,6 +87,26 @@ begin
   FTitle := Value;
 end;
 
+procedure TWMMain.SetUserSession(const Value: TUserSession);
+begin
+  FUserSession := Value;
+end;
+
+procedure TWMMain.WebModuleBeforeDispatch(Sender: TObject; Request: TWebRequest;
+  Response: TWebResponse; var Handled: Boolean);
+begin
+  if ( Request.QueryFields.Values[ 'Session' ] = '' ) then
+  begin
+    FSessionNo := TSessionManager.GetInstance.CreateSession;
+  end
+  else
+  begin
+    FSessionNo:=Request.QueryFields.Values[ 'Session' ];
+  end;
+
+  FUserSession:=TSessionManager.GetInstance.GetSession( FSessionNo );
+end;
+
 procedure TWMMain.WebModuleCreate( Sender: TObject );
 begin
   FTitle := 'Export';
@@ -94,14 +119,14 @@ end;
 procedure TWMMain.WMMainDefaultHandlerAction( Sender: TObject;
   Request: TWebRequest; Response: TWebResponse; var Handled: Boolean );
 begin
-  if ( Request.QueryFields.Values[ 'Session' ] = '' ) then
-  begin
-    FSessionNo := TSessionManager.GetInstance.CreateSession;
-  end
-  else
-  begin
-    FSessionNo := TSessionManager.GetInstance.GetSession( Request.QueryFields.Values[ 'Session' ] ).IdSession;
-  end;
+//  if ( Request.QueryFields.Values[ 'Session' ] = '' ) then
+//  begin
+//    FSessionNo := TSessionManager.GetInstance.CreateSession;
+//  end
+//  else
+//  begin
+//    FSessionNo := TSessionManager.GetInstance.GetSession( Request.QueryFields.Values[ 'Session' ] ).IdSession;
+//  end;
 
   Response.Content := wspIndex.Content;
   Handled := True;

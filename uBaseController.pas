@@ -32,7 +32,7 @@ type
   protected
     FWebStencilsProcessor: TWebStencilsProcessor;
     FWebStencilsEngine: TWebStencilsEngine;
-
+    FWebModule: TWebModule;
   public
     procedure InitializeActions( aWebModule: TWebModule; aWebStencil: TWebStencilsEngine ); virtual;
     procedure CheckSession( Request: TWebRequest );
@@ -57,6 +57,7 @@ begin
     FWebStencilsEngine := aWebStencil;
     FWebStencilsProcessor := TWebStencilsProcessor.Create( nil );
     FWebStencilsProcessor.Engine := FWebStencilsEngine;
+    FWebModule := aWebModule;
   except
     on E: Exception do
       WriteLn( 'TTasksController.Create: ' + E.Message );
