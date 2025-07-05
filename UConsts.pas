@@ -10,8 +10,8 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-06-30T23:03:44.000+02:00
-  Signature : 1d72e93f75a855e42de538b611fdee6e82223400
+  File last update : 2025-07-05T15:24:36.000+02:00
+  Signature : d8cd9d9ae03faa14e3d89c5e90ff70ba023516d9
   ***************************************************************************
 *)
 
@@ -22,9 +22,12 @@ interface
 const
   // Tags
   TAG_SESSION: string = '[%NoSession%]';
-  TAG_ID_USER: string = '[%IdUser%]';
-  TAG_PRENOM:string = '[%Prenom%]';
-  TAG_NOM:string = '[%Nom%]';
+  TAG_CUST_ID: string = '[%CustId%]';
+  TAG_NAME:string = '[%Name%]';
+  TAG_CITY:string = '[%City%]';
+  TAG_COUNTRY:string = '[%Country%]';
+  TAG_TYPE:string = '[%Type%]';
+  TAG_CB_TYPES_CUSTOMER = '[%CbCustomerTypes%]';
 
 implementation
 

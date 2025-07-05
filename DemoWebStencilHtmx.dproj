@@ -145,9 +145,10 @@
         <DCCReference Include="uBaseController.pas"/>
         <DCCReference Include="uInterfaces.pas"/>
         <DCCReference Include="utils.ClassHelpers.pas"/>
-        <DCCReference Include="UListeUsersController.pas"/>
+        <DCCReference Include="UCustomersListController.pas"/>
         <DCCReference Include="uInvokerActions.pas"/>
         <DCCReference Include="UMenu.pas"/>
+        <DCCReference Include="UCustomerDetails.pas"/>
         <None Include="ReadMe.md"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

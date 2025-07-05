@@ -11,25 +11,10 @@ object WMMain: TWMMain
   Height = 460
   Width = 830
   PixelsPerInch = 192
-  object wsEngineDbToXls: TWebStencilsEngine
-    Dispatcher = WebFileDispatcher
+  object wsEngineCustomers: TWebStencilsEngine
     PathTemplates = <>
     Left = 128
     Top = 64
-  end
-  object wspIndex: TWebStencilsProcessor
-    Engine = wsEngineDbToXls
-    InputFileName = './templates/Index.html'
-    PathTemplate = './Templates'
-    Left = 128
-    Top = 216
-  end
-  object wspListeUsers: TWebStencilsProcessor
-    Engine = wsEngineDbToXls
-    InputFileName = './templates/ListeUsers.html'
-    PathTemplate = './Templates'
-    Left = 280
-    Top = 216
   end
   object WebFileDispatcher: TWebFileDispatcher
     WebFileExtensions = <
@@ -75,11 +60,11 @@ object WMMain: TWMMain
     Left = 304
     Top = 64
   end
-  object wspEditUser: TWebStencilsProcessor
-    Engine = wsEngineDbToXls
-    InputFileName = './templates/User.html'
+  object wspIndex: TWebStencilsProcessor
+    Engine = wsEngineCustomers
+    InputFileName = './templates/Index.html'
     PathTemplate = './Templates'
-    Left = 408
+    Left = 128
     Top = 216
   end
 end

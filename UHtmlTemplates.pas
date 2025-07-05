@@ -10,8 +10,8 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-07-01T23:19:20.000+02:00
-  Signature : 28d773d59df3c75f651e937f4f768767831c576e
+  File last update : 2025-07-05T15:29:38.000+02:00
+  Signature : bf048b4f78a0237dd34c6a1fa4bdccd04b6d9456
   ***************************************************************************
 *)
 
@@ -20,11 +20,11 @@ unit UHtmlTemplates;
 interface
 
 const
-  LINE_USER: string = '''
-    <tr id="Row[%IdUser%]">
+  LINE_CUSTOMER: string = '''
+    <tr id="Row[%CustId%]">
       <td>
 
-        <a href="#" hx-delete="/DeleteUser?Session=[%NoSession%]&id=[%IdUser%]" hx-confirm="Etes-vous certains de vouloir supprimer cet utilisateur ?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+        <a href="#" hx-delete="/DeleteCustomer?Session=[%NoSession%]&id=[%CustId%]" hx-confirm="Etes-vous certains de vouloir supprimer ce client ?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
           <span class="material-icons">
           delete
           </span>
@@ -32,7 +32,7 @@ const
       </td>
       <td>
       <button class="btn btn-warning"
-          hx-get="/EditLineMode?Session=[%NoSession%]&id=[%IdUser%]&col=1"
+          hx-get="/EditLineMode?Session=[%NoSession%]&id=[%CustId%]&col=1"
           hx-trigger="edit"
           onClick="let editing = document.querySelector('.editing')
                if(editing) {
@@ -52,51 +52,65 @@ const
         Edit
       </button>
       </td>
-      <td>[%IdUser%]</td>
-      <td id="col1[%IdUser%]">
-      [%Prenom%]
+      <td>[%CustId%]</td>
+      <td id="col1[%CustId%]">
+      [%Name%]
       </td>
-      <td  id="col2[%IdUser%]">
-      [%Nom%]
+      <td  id="col2[%CustId%]">
+      [%City%]
+      </td>
+      <td  id="col2[%CustId%]">
+      [%Country%]
+      </td>
+      <td  id="col2[%CustId%]">
+      [%Type%]
       </td>
     </tr>
   ''';
 
-  EDIT_LINE_USER: string = '''
-    <tr hx-trigger='cancel' class='editing' hx-get="/CancelEditUser?Session=[%NoSession%]&id=[%IdUser%]">
+  EDIT_LINE_CUSTOMER: string = '''
+    <tr hx-trigger='cancel' class='editing' hx-get="/CancelEditLineCustomer?Session=[%NoSession%]&id=[%CustId%]">
       <td></td>
       <td>
-        <button class="btn btn-warning" hx-get="/CancelEditUser?Session=[%NoSession%]&id=[%IdUser%]&col=2">
+        <button class="btn btn-warning" hx-get="/CancelEditLineCustomer?Session=[%NoSession%]&id=[%CustId%]&col=2">
           Cancel
         </button>
-        <button class="btn btn-warning" hx-put="/ApplyUser?Session=[%NoSession%]&id=[%IdUser%]" hx-include="closest tr">
+        <button class="btn btn-warning" hx-put="/ApplyCustomer?Session=[%NoSession%]&id=[%CustId%]" hx-include="closest tr">
           Save
         </button>
       </td>
-      <td>[%IdUser%]</td>
-      <td><input autofocus id="edtPrenom" name='prenom' value='[%Prenom%]'></td>
-      <td><input id="edtNom" name='nom' value='[%Nom%]'></td>
+      <td>[%CustId%]</td>
+      <td><input autofocus id="edtName" name='name' value='[%Name%]'></td>
+      <td><input id="edtCity" name='city' value='[%City%]'></td>
+      <td><input id="edtCountry" name='country' value='[%Country%]'></td>
+      <td>
+        [%CbCustomerTypes%]
+      </td>
     </tr>
   ''';
 
-  ADD_USER:string = '''
+  ADD_CUSTOMER:string = '''
     <tr>
       <td></td>
       <td>
-      <a href="#" hx-post="/ApplyInsertUser?Session=[%NoSession%]" hx-include="closest tr">
+      <a href="#" hx-post="/ApplyInsertCustomer?Session=[%NoSession%]" hx-include="closest tr">
         <span class="material-icons">
           check
         </span>
       </a>
-      <a href="#" hx-get="/CancelAddUser" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+      <a href="#" hx-get="/CancelAddCusomer" hx-target="closest tr" hx-swap="outerHTML swap:1s">
         <span class="material-icons">
           cancel
         </span>
       </a>
       </td>
       <td></td>
-      <td><input type="text" id="edtPrenom" name="prenom" value=""/></td>
-      <td><input type="text" id="edtNom" name="Nom" value=""/></td>
+      <td><input type="text" id="edtName" name="name" value=""/></td>
+      <td><input type="text" id="edtCity" name="City" value=""/></td>
+      <td><input type="text" id="edtCountry" name="Country" value=""/></td>
+      <td>
+        [%CbCustomerTypes%]
+      </td>
     </tr>
   ''';
 

@@ -10,8 +10,8 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-07-02T23:34:44.000+02:00
-  Signature : 688c77ce6b65b539e848d84171d5c38a1d6c7c96
+  File last update : 2025-07-05T23:32:46.000+02:00
+  Signature : 1809c1e6fdb0c909e8b618a59b4bd83c4f17a3e9
   ***************************************************************************
 *)
 
@@ -41,31 +41,56 @@ uses
   Data.DB,
   FireDAC.Comp.DataSet,
   FireDAC.Comp.Client,
-  System.SyncObjs, Datasnap.DBClient;
+  System.SyncObjs,
+  Datasnap.DBClient;
 
 type
   TDMSession = class( TDataModule )
-    CnxExport: TFDConnection;
-    QryUsers: TFDQuery;
-    QryUsersID_USER: TIntegerField;
-    QryUsersNOM: TWideStringField;
-    QryUsersPRENOM: TWideStringField;
-    QryUser: TFDQuery;
-    QryUserID_USER: TIntegerField;
-    QryUserNOM: TWideStringField;
-    QryUserPRENOM: TWideStringField;
+    CnxCustomers: TFDConnection;
+    QryCustomers: TFDQuery;
+    QryCustomer: TFDQuery;
     QrySeq: TFDQuery;
     QrySeqNEWID: TLargeintField;
-    QryUserCancel: TFDQuery;
-    IntegerField1: TIntegerField;
-    WideStringField1: TWideStringField;
-    WideStringField2: TWideStringField;
-    CdsMenu: TClientDataSet;
-    CdsMenuLibelle: TStringField;
-    CdsMenuIcone: TStringField;
-    CdsMenuUrl: TStringField;
+    QryCustomerCancel: TFDQuery;
+    QryCustomersCUST_ID: TIntegerField;
+    QryCustomersCUST_NAME: TWideStringField;
+    QryCustomersCUST_VILLE: TWideStringField;
+    QryCustomersCUST_PAYS: TWideStringField;
+    QryCustomersCUST_TYPE: TWideStringField;
+    QryCustomerCUST_ID: TIntegerField;
+    QryCustomerCUST_NAME: TWideStringField;
+    QryCustomerCUST_VILLE: TWideStringField;
+    QryCustomerCUST_PAYS: TWideStringField;
+    QryCustomerCUST_TYPE: TWideStringField;
+    QryCustomerCancelCUST_ID: TIntegerField;
+    QryCustomerCancelCUST_NAME: TWideStringField;
+    QryCustomerCancelCUST_VILLE: TWideStringField;
+    QryCustomerCancelCUST_PAYS: TWideStringField;
+    QryCustomerCancelCUST_TYPE: TWideStringField;
+    QryCustomersCUST_LIB_TYPE: TStringField;
+    QryCustomerCUST_LIB_TYPE: TStringField;
+    qryCustomerTypes: TFDQuery;
+    qryCustomerTypesCT_TYPE: TWideStringField;
+    qryCustomerTypesCT_LIBELLE: TWideStringField;
+    QryCustomerTotQuotes: TFDQuery;
+    QryCustomerTotOrders: TFDQuery;
+    QryCustomerTotQuotesTOTAL_QUOTE: TFMTBCDField;
+    QryCustomerTotOrdersTOTAL_ORDER: TFMTBCDField;
+    QryListQuotes: TFDQuery;
+    QryListOrders: TFDQuery;
+    QryListQuotesDOC_ID: TIntegerField;
+    QryListQuotesDOC_TYPE: TWideStringField;
+    QryListQuotesDOC_DESCRIPTION: TWideStringField;
+    QryListQuotesDOC_AMOUNT: TFMTBCDField;
+    QryListQuotesDOC_CUST_ID: TIntegerField;
+    QryListOrdersDOC_ID: TIntegerField;
+    QryListOrdersDOC_TYPE: TWideStringField;
+    QryListOrdersDOC_DESCRIPTION: TWideStringField;
+    QryListOrdersDOC_AMOUNT: TFMTBCDField;
+    QryListOrdersDOC_CUST_ID: TIntegerField;
     procedure DataModuleCreate( Sender: TObject );
     procedure DataModuleDestroy( Sender: TObject );
+    procedure QryCustomersCalcFields( DataSet: TDataSet );
   private
     FCritical: TCriticalSection;
     { Déclarations privées }
@@ -88,13 +113,23 @@ procedure TDMSession.DataModuleCreate( Sender: TObject );
 begin
   FDManager.Active := True;
   FCritical := TCriticalSection.Create;
-
-  CdsMenu.CreateDataSet;
 end;
 
 procedure TDMSession.DataModuleDestroy( Sender: TObject );
 begin
   FreeAndNil( FCritical );
+end;
+
+procedure TDMSession.QryCustomersCalcFields( DataSet: TDataSet );
+begin
+  if DataSet.FieldByName( 'CUST_TYPE' ).AsString = 'C' then
+  begin
+    DataSet.FieldByName( 'CUST_LIB_TYPE' ).AsString := 'Customer';
+  end
+  else
+  begin
+    DataSet.FieldByName( 'CUST_LIB_TYPE' ).AsString := 'Prospect';
+  end;
 end;
 
 end.

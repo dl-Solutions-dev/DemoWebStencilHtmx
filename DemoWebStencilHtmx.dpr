@@ -10,8 +10,8 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-07-02T23:27:48.000+02:00
-  Signature : cfd6f60e3b0ce7e51cba49ca3111df21c1360ca4
+  File last update : 2025-07-05T19:41:34.000+02:00
+  Signature : f364958d3b391d99a4abceb32360a8c8ac5ea93d
   ***************************************************************************
 *)
 
@@ -31,9 +31,10 @@ uses
   uBaseController in 'uBaseController.pas',
   uInterfaces in 'uInterfaces.pas',
   utils.ClassHelpers in 'utils.ClassHelpers.pas',
-  UListeUsersController in 'UListeUsersController.pas',
+  UCustomersListController in 'UCustomersListController.pas',
   uInvokerActions in 'uInvokerActions.pas',
-  UMenu in 'UMenu.pas';
+  UMenu in 'UMenu.pas',
+  UCustomerDetails in 'UCustomerDetails.pas';
 
 {$R *.res}
 

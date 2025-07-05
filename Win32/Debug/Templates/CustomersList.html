@@ -1,0 +1,88 @@
+@LayoutPage Templates/IndexTemplate.html
+
+<h1 class="text-center">Customers list</h1>
+<br/>
+<!--NoSession : @App.SessionNo&nbsp;démarrée le : @App.UserSession.StartDate-->
+<script>
+function confirmDelete(aForm){
+	if (confirm("Etes-vous certains de vouloir supprimer ce client ?")){
+		aForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
+	}
+}
+</script>
+
+<div class="container">
+
+	<Table  class="table">
+		<thead class="table-light">
+		<tr>
+		  <th scope="col"></th>
+		  <th scope="col"></th>
+		  <th scope="col"></th>
+		  <th scope="col">ID</th>
+		  <th scope="col">Nom</th>
+		  <th scope="col">Ville</th>
+		  <th scope="col">Pays</th>
+		  <th scope="col">Type</th>
+		</tr>
+		</thead>
+		<tbody id="TableCustomers" hx-target="closest tr" hx-swap="outerHTML">
+		@foreach CustomerList {
+			<tr id="Row@loop.CUST_ID">
+			  <td>
+			  
+					<a href="#" hx-delete="/DeleteCustomer?Session=@App.SessionNo&id=@loop.CUST_ID" hx-confirm="Etes-vous certains de vouloir supprimer cet utilisateur ?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+						<span class="material-icons">
+						delete
+						</span>
+					</a>
+			  </td>
+			  <td>
+					<a href="/DetailsCustomer?Session=@App.SessionNo&CustId=@loop.CUST_ID">
+						<span class="material-icons">
+						visibility
+						</span>
+					</a>
+			  </td>
+			  <td>
+				<button class="btn btn-warning"
+						hx-get="/EditLineMode?Session=@App.SessionNo&id=@loop.CUST_ID&col=1"
+						hx-trigger="edit"
+						onClick="let editing = document.querySelector('.editing')
+								 if(editing) {
+								   Swal.fire({title: 'Already Editing',
+											  showCancelButton: true,
+											  confirmButtonText: 'Yep, Edit This Row!',
+											  text:'Une ligne est déjà en cours d&#x2019;édition, voulez-vous continuer ?'})
+								   .then((result) => {
+										if(result.isConfirmed) {
+										   htmx.trigger(editing, 'Cancel')
+										   htmx.trigger(this, 'edit')
+										}
+									})
+								 } else {
+									htmx.trigger(this, 'edit')
+								 }">
+				  Edit
+				</button>
+			  </td>
+			  <td>@loop.CUST_ID</td>
+			  <td id="col1@loop.CUST_ID">
+				@loop.CUST_NAME
+			  </td>
+			  <td  id="col2@loop.CUST_ID">
+				@loop.CUST_VILLE
+			  </td>
+			  <td  id="col3@loop.CUST_ID">
+				@loop.CUST_PAYS
+			  </td>
+			  <td  id="col4@loop.CUST_ID">
+				@loop.CUST_LIB_TYPE
+			  </td>
+			</tr>
+		}
+		</tbody>
+	</table>
+	
+	<button type="button" id="btnAddCustomer" class="btn btn-primary" hx-get="/AddCustomer?Session=@App.SessionNo" hx-target="#TableCustomers" hx-swap="beforeend">Add customer</button>
+</div>

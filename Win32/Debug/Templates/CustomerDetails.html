@@ -1,0 +1,19 @@
+@LayoutPage Templates/IndexTemplate.html
+
+<h1 class="text-center">@Customer.CUST_NAME (@Customer.CUST_TYPE)</h1>
+<br/>
+<!--NoSession : @App.SessionNo&nbsp;démarrée le : @App.UserSession.StartDate-->
+
+
+<div class="container">
+
+<div>
+	Total quotes : @TotalQuotes.TOTAL_QUOTE
+</div>
+
+@if (Customer.CUST_TYPE="C") {
+<div>	
+	Total Orders : @TotalOrders.TOTAL_ORDER
+</div>
+}
+</div>

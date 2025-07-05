@@ -4,71 +4,114 @@ object DMSession: TDMSession
   Height = 1920
   Width = 2560
   PixelsPerInch = 192
-  object CnxExport: TFDConnection
+  object CnxCustomers: TFDConnection
     Params.Strings = (
+      
+        'Database=C:\Users\danyleblanc\Documents\DL-Projets\DemoWebStenci' +
+        'lHtmx\Database\CUSTOMERS.FDB'
       'ConnectionDef=EXPORT_SQL')
     Connected = True
     LoginPrompt = False
     Left = 231
     Top = 59
   end
-  object QryUsers: TFDQuery
-    Connection = CnxExport
+  object QryCustomers: TFDQuery
+    OnCalcFields = QryCustomersCalcFields
+    Connection = CnxCustomers
     SQL.Strings = (
-      'SELECT * FROM EXPORT_SQL_USERS'
-      'order by NOM')
+      'SELECT * FROM CUSTOMERS'
+      'order by CUST_NAME')
     Left = 231
     Top = 219
-    object QryUsersID_USER: TIntegerField
-      FieldName = 'ID_USER'
-      Origin = 'ID_USER'
+    object QryCustomersCUST_ID: TIntegerField
+      FieldName = 'CUST_ID'
+      Origin = 'CUST_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object QryUsersNOM: TWideStringField
-      FieldName = 'NOM'
-      Origin = 'NOM'
-      Size = 100
+    object QryCustomersCUST_NAME: TWideStringField
+      FieldName = 'CUST_NAME'
+      Origin = 'CUST_NAME'
+      Required = True
+      Size = 500
     end
-    object QryUsersPRENOM: TWideStringField
-      FieldName = 'PRENOM'
-      Origin = 'PRENOM'
+    object QryCustomersCUST_VILLE: TWideStringField
+      FieldName = 'CUST_VILLE'
+      Origin = 'CUST_VILLE'
+      Size = 500
+    end
+    object QryCustomersCUST_PAYS: TWideStringField
+      FieldName = 'CUST_PAYS'
+      Origin = 'CUST_PAYS'
+      Size = 500
+    end
+    object QryCustomersCUST_TYPE: TWideStringField
+      FieldName = 'CUST_TYPE'
+      Origin = 'CUST_TYPE'
+      FixedChar = True
+      Size = 1
+    end
+    object QryCustomersCUST_LIB_TYPE: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CUST_LIB_TYPE'
       Size = 100
+      Calculated = True
     end
   end
-  object QryUser: TFDQuery
-    Connection = CnxExport
+  object QryCustomer: TFDQuery
+    OnCalcFields = QryCustomersCalcFields
+    Connection = CnxCustomers
     SQL.Strings = (
-      'select * from EXPORT_SQL_USERS'
-      'where ID_USER = :ID_USER')
-    Left = 384
+      'select * from CUSTOMERS'
+      'where CUST_ID = :CUST_ID')
+    Left = 392
     Top = 216
     ParamData = <
       item
-        Name = 'ID_USER'
+        Name = 'CUST_ID'
         DataType = ftInteger
         ParamType = ptInput
-        Value = 2
+        Value = Null
       end>
-    object QryUserID_USER: TIntegerField
-      FieldName = 'ID_USER'
-      Origin = 'ID_USER'
+    object QryCustomerCUST_ID: TIntegerField
+      FieldName = 'CUST_ID'
+      Origin = 'CUST_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object QryUserNOM: TWideStringField
-      FieldName = 'NOM'
-      Origin = 'NOM'
-      Size = 100
+    object QryCustomerCUST_NAME: TWideStringField
+      FieldName = 'CUST_NAME'
+      Origin = 'CUST_NAME'
+      Required = True
+      Size = 500
     end
-    object QryUserPRENOM: TWideStringField
-      FieldName = 'PRENOM'
-      Origin = 'PRENOM'
-      Size = 100
+    object QryCustomerCUST_VILLE: TWideStringField
+      FieldName = 'CUST_VILLE'
+      Origin = 'CUST_VILLE'
+      Size = 500
+    end
+    object QryCustomerCUST_PAYS: TWideStringField
+      FieldName = 'CUST_PAYS'
+      Origin = 'CUST_PAYS'
+      Size = 500
+    end
+    object QryCustomerCUST_TYPE: TWideStringField
+      FieldName = 'CUST_TYPE'
+      Origin = 'CUST_TYPE'
+      FixedChar = True
+      Size = 1
+    end
+    object QryCustomerCUST_LIB_TYPE: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CUST_LIB_TYPE'
+      Size = 500
+      Calculated = True
     end
   end
   object QrySeq: TFDQuery
-    Connection = CnxExport
+    Connection = CnxCustomers
     SQL.Strings = (
-      'SELECT NEXT VALUE FOR GEN_USER_ID as "NEWID"  FROM RDB$DATABASE')
+      'SELECT NEXT VALUE FOR GEN_CUST_ID as "NEWID"  FROM RDB$DATABASE')
     Left = 232
     Top = 368
     object QrySeqNEWID: TLargeintField
@@ -79,52 +122,208 @@ object DMSession: TDMSession
       ReadOnly = True
     end
   end
-  object QryUserCancel: TFDQuery
-    Connection = CnxExport
+  object QryCustomerCancel: TFDQuery
+    Connection = CnxCustomers
     SQL.Strings = (
-      'select * from EXPORT_SQL_USERS'
-      'where ID_USER = :ID_USER')
+      'select * from CUSTOMERS'
+      'where CUST_ID = :CUST_ID')
     Left = 384
     Top = 368
     ParamData = <
       item
-        Name = 'ID_USER'
+        Name = 'CUST_ID'
         DataType = ftInteger
         ParamType = ptInput
-        Value = 2
+        Value = Null
       end>
-    object IntegerField1: TIntegerField
-      FieldName = 'ID_USER'
-      Origin = 'ID_USER'
+    object QryCustomerCancelCUST_ID: TIntegerField
+      FieldName = 'CUST_ID'
+      Origin = 'CUST_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object WideStringField1: TWideStringField
-      FieldName = 'NOM'
-      Origin = 'NOM'
-      Size = 100
+    object QryCustomerCancelCUST_NAME: TWideStringField
+      FieldName = 'CUST_NAME'
+      Origin = 'CUST_NAME'
+      Required = True
+      Size = 500
     end
-    object WideStringField2: TWideStringField
-      FieldName = 'PRENOM'
-      Origin = 'PRENOM'
+    object QryCustomerCancelCUST_VILLE: TWideStringField
+      FieldName = 'CUST_VILLE'
+      Origin = 'CUST_VILLE'
+      Size = 500
+    end
+    object QryCustomerCancelCUST_PAYS: TWideStringField
+      FieldName = 'CUST_PAYS'
+      Origin = 'CUST_PAYS'
+      Size = 500
+    end
+    object QryCustomerCancelCUST_TYPE: TWideStringField
+      FieldName = 'CUST_TYPE'
+      Origin = 'CUST_TYPE'
+      FixedChar = True
+      Size = 1
+    end
+  end
+  object qryCustomerTypes: TFDQuery
+    Connection = CnxCustomers
+    SQL.Strings = (
+      'select * from CUSTOMER_TYPES'
+      'order by CT_LIBELLE')
+    Left = 240
+    Top = 496
+    object qryCustomerTypesCT_TYPE: TWideStringField
+      FieldName = 'CT_TYPE'
+      Origin = 'CT_TYPE'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      FixedChar = True
+      Size = 1
+    end
+    object qryCustomerTypesCT_LIBELLE: TWideStringField
+      FieldName = 'CT_LIBELLE'
+      Origin = 'CT_LIBELLE'
       Size = 100
     end
   end
-  object CdsMenu: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 232
-    Top = 520
-    object CdsMenuLibelle: TStringField
-      FieldName = 'Libelle'
-      Size = 500
+  object QryCustomerTotQuotes: TFDQuery
+    Connection = CnxCustomers
+    SQL.Strings = (
+      'select sum(DOC_AMOUNT) as "TOTAL_QUOTE" from DOCUMENTS'
+      'where DOC_CUST_ID = :DOC_CUST_ID'
+      'and DOC_TYPE='#39'Q'#39)
+    Left = 624
+    Top = 216
+    ParamData = <
+      item
+        Name = 'DOC_CUST_ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object QryCustomerTotQuotesTOTAL_QUOTE: TFMTBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'TOTAL_QUOTE'
+      Origin = 'TOTAL_QUOTE'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
     end
-    object CdsMenuIcone: TStringField
-      FieldName = 'Icone'
-      Size = 50
+  end
+  object QryCustomerTotOrders: TFDQuery
+    Connection = CnxCustomers
+    SQL.Strings = (
+      'select sum(DOC_AMOUNT) as "TOTAL_ORDER" from DOCUMENTS'
+      'where DOC_CUST_ID = :DOC_CUST_ID'
+      'and DOC_TYPE='#39'O'#39)
+    Left = 624
+    Top = 368
+    ParamData = <
+      item
+        Name = 'DOC_CUST_ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object QryCustomerTotOrdersTOTAL_ORDER: TFMTBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'TOTAL_ORDER'
+      Origin = 'TOTAL_ORDER'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
     end
-    object CdsMenuUrl: TStringField
-      FieldName = 'Url'
-      Size = 500
+  end
+  object QryListQuotes: TFDQuery
+    Connection = CnxCustomers
+    SQL.Strings = (
+      'select * from DOCUMENTS'
+      'where DOC_CUST_ID = :DOC_CUST_ID'
+      'and DOC_TYPE='#39'Q'#39)
+    Left = 624
+    Top = 496
+    ParamData = <
+      item
+        Name = 'DOC_CUST_ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object QryListQuotesDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = 'DOC_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryListQuotesDOC_TYPE: TWideStringField
+      FieldName = 'DOC_TYPE'
+      Origin = 'DOC_TYPE'
+      Required = True
+      FixedChar = True
+      Size = 1
+    end
+    object QryListQuotesDOC_DESCRIPTION: TWideStringField
+      FieldName = 'DOC_DESCRIPTION'
+      Origin = 'DOC_DESCRIPTION'
+      Size = 1000
+    end
+    object QryListQuotesDOC_AMOUNT: TFMTBCDField
+      FieldName = 'DOC_AMOUNT'
+      Origin = 'DOC_AMOUNT'
+      Precision = 18
+      Size = 2
+    end
+    object QryListQuotesDOC_CUST_ID: TIntegerField
+      FieldName = 'DOC_CUST_ID'
+      Origin = 'DOC_CUST_ID'
+      Required = True
+    end
+  end
+  object QryListOrders: TFDQuery
+    Connection = CnxCustomers
+    SQL.Strings = (
+      'select * from DOCUMENTS'
+      'where DOC_CUST_ID = :DOC_CUST_ID'
+      'and DOC_TYPE='#39'O'#39)
+    Left = 784
+    Top = 496
+    ParamData = <
+      item
+        Name = 'DOC_CUST_ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object QryListOrdersDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = 'DOC_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryListOrdersDOC_TYPE: TWideStringField
+      FieldName = 'DOC_TYPE'
+      Origin = 'DOC_TYPE'
+      Required = True
+      FixedChar = True
+      Size = 1
+    end
+    object QryListOrdersDOC_DESCRIPTION: TWideStringField
+      FieldName = 'DOC_DESCRIPTION'
+      Origin = 'DOC_DESCRIPTION'
+      Size = 1000
+    end
+    object QryListOrdersDOC_AMOUNT: TFMTBCDField
+      FieldName = 'DOC_AMOUNT'
+      Origin = 'DOC_AMOUNT'
+      Precision = 18
+      Size = 2
+    end
+    object QryListOrdersDOC_CUST_ID: TIntegerField
+      FieldName = 'DOC_CUST_ID'
+      Origin = 'DOC_CUST_ID'
+      Required = True
     end
   end
 end
