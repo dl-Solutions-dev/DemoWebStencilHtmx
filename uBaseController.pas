@@ -36,6 +36,8 @@ type
     FWebModule: TWebModule;
 
     function PickList( aListe: TFDQuery; aPickListName, aCSSClass, aKey, aValue, aSelectedValue: string ): string;
+
+    procedure SendEmptyContent( aResponse: TWebResponse );
   public
     procedure InitializeActions( aWebModule: TWebModule; aWebStencil: TWebStencilsEngine ); virtual;
     procedure CheckSession( Request: TWebRequest );
@@ -87,6 +89,13 @@ begin
   end;
 
   Result := Result + '</select>';
+end;
+
+procedure TBaseController.SendEmptyContent( aResponse: TWebResponse );
+begin
+  aResponse.Content := ' ';
+  aResponse.ContentLength := 1;
+  aResponse.StatusCode := 200;
 end;
 
 end.

@@ -1,0 +1,38 @@
+			<tr id="Row@Order.DOC_ID">
+			  <td>			  
+					<a href="#" hx-delete="/DeleteOrder?Session=@App.SessionNo&id=@Order.DOC_ID" hx-confirm="Are you sure to want to delete this order ?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+						<span class="material-icons">
+						delete
+						</span>
+					</a>
+			  </td>
+			  <td>
+				<button class="btn btn-warning"
+						hx-get="/EditOrderLineMode?Session=@App.SessionNo&id=@Order.DOC_ID&col=1"
+						hx-trigger="editOrder"
+						onClick="let editingOrder = document.querySelector('.editingOrder')
+								 if(editingOrder) {
+								   Swal.fire({title: 'Already Editing',
+											  showCancelButton: true,
+											  confirmButtonText: 'Yep, Edit This Row!',
+											  text:'Une ligne est déjà en cours d&#x2019;édition, voulez-vous continuer ?'})
+								   .then((result) => {
+										if(result.isConfirmed) {
+										   htmx.trigger(editingOrder, 'cancelOrder')
+										   htmx.trigger(this, 'editOrder')
+										}
+									})
+								 } else {
+									htmx.trigger(this, 'editOrder')
+								 }">
+				  Edit
+				</button>
+			  </td>
+			  <td>@Order.DOC_ID</td>
+			  <td id="col1@Order.DOC_ID">
+				@Order.DOC_DESCRIPTION
+			  </td>
+			  <td  id="col2@Order.DOC_ID">
+				@Order.DOC_AMOUNT
+			  </td>
+			</tr>

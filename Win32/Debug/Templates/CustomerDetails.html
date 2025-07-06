@@ -1,19 +1,64 @@
 @LayoutPage Templates/IndexTemplate.html
 
-<h1 class="text-center">@Customer.CUST_NAME (@Customer.CUST_TYPE)</h1>
+
+<h1 class="text-center">@Customer.CUST_NAME (@App.UserSession.IdCustomer)</h1>
 <br/>
 <!--NoSession : @App.SessionNo&nbsp;démarrée le : @App.UserSession.StartDate-->
-
 
 <div class="container">
 
 <div>
-	Total quotes : @TotalQuotes.TOTAL_QUOTE
+	Total quotes : <span id="TotalQuote" hx-trigger="UpdateTotalQuote" hx-get="/GetTotalQuote?Session=@App.SessionNo">@TotalQuotes.TOTAL_QUOTE</span>
 </div>
 
 @if (Customer.CUST_TYPE="C") {
 <div>	
-	Total Orders : @TotalOrders.TOTAL_ORDER
+	Total Orders : <span id="TotalOrder" hx-trigger="UpdateTotalOrder" hx-get="/GetTotalOrder?Session=@App.SessionNo">@TotalOrders.TOTAL_ORDER</span>
 </div>
+}
+
+	<h3 class="text-center">QUOTES LIST</h3>
+
+	<Table  class="table">
+		<thead class="table-light">
+		<tr>
+		  <th scope="col"></th>
+		  <th scope="col"></th>
+		  <th scope="col">ID</th>
+		  <th scope="col">Desription</th>
+		  <th scope="col">Amount</th>
+		</tr>
+		</thead>
+		<tbody id="QuotesTable" hx-target="closest tr" hx-swap="outerHTML">
+			@foreach ListQuotes {
+				@import Templates/QuoteLine {@Quote = @loop}
+			}
+		</tbody>
+	</table>
+	
+	<button type="button" id="btnAddQuote" class="btn btn-primary" hx-get="/AddQuote?Session=@App.SessionNo&CustId=@Customer.CUST_ID" hx-target="#QuotesTable" hx-swap="beforeend">Add quote</button>
+	<br/>
+	
+@if (Customer.CUST_TYPE="C") {
+	<h3 class="text-center">ORDERS LIST</h3>
+
+	<Table  class="table">
+		<thead class="table-light">
+		<tr>
+		  <th scope="col"></th>
+		  <th scope="col"></th>
+		  <th scope="col">ID</th>
+		  <th scope="col">Desription</th>
+		  <th scope="col">Amount</th>
+		</tr>
+		</thead>
+		<tbody id="OrdersTable" hx-target="closest tr" hx-swap="outerHTML">
+			@foreach ListOrders {
+				@import Templates/OrderLine {@Order = @loop}
+			}
+		</tbody>
+	</table>
+	
+	<button type="button" id="btnAddOrder" class="btn btn-primary" hx-get="/AddOrder?Session=@App.SessionNo" hx-target="#OrdersTable" hx-swap="beforeend">Add order</button>
 }
 </div>

@@ -1,0 +1,21 @@
+	<tr>
+      <td></td>
+      <td>
+      <a href="#" 
+		hx-post="/ApplyInsertQuote?Session=@App.SessionNo&CustId=@Customer.CUST_ID" 
+		hx-include="closest tr"
+
+        <span class="material-icons">
+          check
+        </span>
+      </a>
+      <a href="#" hx-get="/CancelAddQuote" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+        <span class="material-icons">
+          cancel
+        </span>
+      </a>
+      </td>
+      <td></td>
+      <td><input type="text" id="edtDescription" name="Description" value=""/></td>
+      <td><input type="text" id="edtAmount" name="Amount" value=""/></td>
+    </tr>

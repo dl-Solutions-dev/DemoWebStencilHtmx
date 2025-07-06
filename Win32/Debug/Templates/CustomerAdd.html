@@ -1,0 +1,27 @@
+	<tr>
+      <td></td>
+      <td></td>
+      <td>
+      <a href="#" hx-post="/ApplyInsertCustomer?Session=@App.SessionNo" hx-include="closest tr">
+        <span class="material-icons">
+          check
+        </span>
+      </a>
+      <a href="#" hx-get="/CancelAddCusomer" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+        <span class="material-icons">
+          cancel
+        </span>
+      </a>
+      </td>
+      <td></td>
+      <td><input type="text" id="edtName" name="name" value=""/></td>
+      <td><input type="text" id="edtCity" name="City" value=""/></td>
+      <td><input type="text" id="edtCountry" name="Country" value=""/></td>
+      <td>
+        <select id="TYPE" name="TYPE">
+		@foreach CustomerTypes {
+			<option value="@loop.CT_TYPE">@loop.CT_LIBELLE</option>
+		}
+		<select>
+      </td>
+    </tr>

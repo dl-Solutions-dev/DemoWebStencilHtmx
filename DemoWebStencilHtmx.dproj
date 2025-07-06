@@ -140,7 +140,6 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="USessionManager.pas"/>
-        <DCCReference Include="UHtmlTemplates.pas"/>
         <DCCReference Include="UConsts.pas"/>
         <DCCReference Include="uBaseController.pas"/>
         <DCCReference Include="uInterfaces.pas"/>
@@ -148,7 +147,7 @@
         <DCCReference Include="UCustomersListController.pas"/>
         <DCCReference Include="uInvokerActions.pas"/>
         <DCCReference Include="UMenu.pas"/>
-        <DCCReference Include="UCustomerDetails.pas"/>
+        <DCCReference Include="UCustomerDetailsController.pas"/>
         <None Include="ReadMe.md"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

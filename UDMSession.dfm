@@ -9,6 +9,7 @@ object DMSession: TDMSession
       
         'Database=C:\Users\danyleblanc\Documents\DL-Projets\DemoWebStenci' +
         'lHtmx\Database\CUSTOMERS.FDB'
+      'CharacterSet=UNICODE_FSS'
       'ConnectionDef=EXPORT_SQL')
     Connected = True
     LoginPrompt = False
@@ -64,8 +65,8 @@ object DMSession: TDMSession
     SQL.Strings = (
       'select * from CUSTOMERS'
       'where CUST_ID = :CUST_ID')
-    Left = 392
-    Top = 216
+    Left = 232
+    Top = 344
     ParamData = <
       item
         Name = 'CUST_ID'
@@ -108,13 +109,13 @@ object DMSession: TDMSession
       Calculated = True
     end
   end
-  object QrySeq: TFDQuery
+  object QrySeqCustomer: TFDQuery
     Connection = CnxCustomers
     SQL.Strings = (
       'SELECT NEXT VALUE FOR GEN_CUST_ID as "NEWID"  FROM RDB$DATABASE')
-    Left = 232
-    Top = 368
-    object QrySeqNEWID: TLargeintField
+    Left = 224
+    Top = 968
+    object QrySeqCustomerNEWID: TLargeintField
       AutoGenerateValue = arDefault
       FieldName = 'NEWID'
       Origin = 'NEWID'
@@ -127,8 +128,8 @@ object DMSession: TDMSession
     SQL.Strings = (
       'select * from CUSTOMERS'
       'where CUST_ID = :CUST_ID')
-    Left = 384
-    Top = 368
+    Left = 232
+    Top = 472
     ParamData = <
       item
         Name = 'CUST_ID'
@@ -170,8 +171,8 @@ object DMSession: TDMSession
     SQL.Strings = (
       'select * from CUSTOMER_TYPES'
       'order by CT_LIBELLE')
-    Left = 240
-    Top = 496
+    Left = 232
+    Top = 840
     object qryCustomerTypesCT_TYPE: TWideStringField
       FieldName = 'CT_TYPE'
       Origin = 'CT_TYPE'
@@ -192,8 +193,8 @@ object DMSession: TDMSession
       'select sum(DOC_AMOUNT) as "TOTAL_QUOTE" from DOCUMENTS'
       'where DOC_CUST_ID = :DOC_CUST_ID'
       'and DOC_TYPE='#39'Q'#39)
-    Left = 624
-    Top = 216
+    Left = 504
+    Top = 600
     ParamData = <
       item
         Name = 'DOC_CUST_ID'
@@ -217,8 +218,8 @@ object DMSession: TDMSession
       'select sum(DOC_AMOUNT) as "TOTAL_ORDER" from DOCUMENTS'
       'where DOC_CUST_ID = :DOC_CUST_ID'
       'and DOC_TYPE='#39'O'#39)
-    Left = 624
-    Top = 368
+    Left = 776
+    Top = 600
     ParamData = <
       item
         Name = 'DOC_CUST_ID'
@@ -241,9 +242,10 @@ object DMSession: TDMSession
     SQL.Strings = (
       'select * from DOCUMENTS'
       'where DOC_CUST_ID = :DOC_CUST_ID'
-      'and DOC_TYPE='#39'Q'#39)
-    Left = 624
-    Top = 496
+      'and DOC_TYPE='#39'Q'#39
+      'order by DOC_ID')
+    Left = 512
+    Top = 224
     ParamData = <
       item
         Name = 'DOC_CUST_ID'
@@ -287,8 +289,8 @@ object DMSession: TDMSession
       'select * from DOCUMENTS'
       'where DOC_CUST_ID = :DOC_CUST_ID'
       'and DOC_TYPE='#39'O'#39)
-    Left = 784
-    Top = 496
+    Left = 760
+    Top = 224
     ParamData = <
       item
         Name = 'DOC_CUST_ID'
@@ -321,6 +323,200 @@ object DMSession: TDMSession
       Size = 2
     end
     object QryListOrdersDOC_CUST_ID: TIntegerField
+      FieldName = 'DOC_CUST_ID'
+      Origin = 'DOC_CUST_ID'
+      Required = True
+    end
+  end
+  object QrySeqDoc: TFDQuery
+    Connection = CnxCustomers
+    SQL.Strings = (
+      'SELECT NEXT VALUE FOR GEN_DOC_ID as "NEWID"  FROM RDB$DATABASE')
+    Left = 496
+    Top = 968
+    object QrySeqDocNEWID: TLargeintField
+      AutoGenerateValue = arDefault
+      FieldName = 'NEWID'
+      Origin = 'NEWID'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+  end
+  object QryQuote: TFDQuery
+    Connection = CnxCustomers
+    SQL.Strings = (
+      'select * from DOCUMENTS'
+      'where DOC_ID = :DOC_ID'
+      'and DOC_TYPE='#39'Q'#39)
+    Left = 504
+    Top = 344
+    ParamData = <
+      item
+        Name = 'DOC_ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object QryQuoteDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = 'DOC_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryQuoteDOC_TYPE: TWideStringField
+      FieldName = 'DOC_TYPE'
+      Origin = 'DOC_TYPE'
+      Required = True
+      FixedChar = True
+      Size = 1
+    end
+    object QryQuoteDOC_DESCRIPTION: TWideStringField
+      FieldName = 'DOC_DESCRIPTION'
+      Origin = 'DOC_DESCRIPTION'
+      Size = 1000
+    end
+    object QryQuoteDOC_AMOUNT: TFMTBCDField
+      FieldName = 'DOC_AMOUNT'
+      Origin = 'DOC_AMOUNT'
+      Precision = 18
+      Size = 2
+    end
+    object QryQuoteDOC_CUST_ID: TIntegerField
+      FieldName = 'DOC_CUST_ID'
+      Origin = 'DOC_CUST_ID'
+      Required = True
+    end
+  end
+  object QryQuoteCancel: TFDQuery
+    Connection = CnxCustomers
+    SQL.Strings = (
+      'select * from DOCUMENTS'
+      'where DOC_ID = :DOC_ID'
+      'and DOC_TYPE='#39'Q'#39)
+    Left = 504
+    Top = 472
+    ParamData = <
+      item
+        Name = 'DOC_ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object QryQuoteCancelDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = 'DOC_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryQuoteCancelDOC_TYPE: TWideStringField
+      FieldName = 'DOC_TYPE'
+      Origin = 'DOC_TYPE'
+      Required = True
+      FixedChar = True
+      Size = 1
+    end
+    object QryQuoteCancelDOC_DESCRIPTION: TWideStringField
+      FieldName = 'DOC_DESCRIPTION'
+      Origin = 'DOC_DESCRIPTION'
+      Size = 1000
+    end
+    object QryQuoteCancelDOC_AMOUNT: TFMTBCDField
+      FieldName = 'DOC_AMOUNT'
+      Origin = 'DOC_AMOUNT'
+      Precision = 18
+      Size = 2
+    end
+    object QryQuoteCancelDOC_CUST_ID: TIntegerField
+      FieldName = 'DOC_CUST_ID'
+      Origin = 'DOC_CUST_ID'
+      Required = True
+    end
+  end
+  object QryOrder: TFDQuery
+    Connection = CnxCustomers
+    SQL.Strings = (
+      'select * from DOCUMENTS'
+      'where DOC_ID = :DOC_ID'
+      'and DOC_TYPE='#39'O'#39)
+    Left = 768
+    Top = 344
+    ParamData = <
+      item
+        Name = 'DOC_ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object QryOrderDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = 'DOC_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryOrderDOC_TYPE: TWideStringField
+      FieldName = 'DOC_TYPE'
+      Origin = 'DOC_TYPE'
+      Required = True
+      FixedChar = True
+      Size = 1
+    end
+    object QryOrderDOC_DESCRIPTION: TWideStringField
+      FieldName = 'DOC_DESCRIPTION'
+      Origin = 'DOC_DESCRIPTION'
+      Size = 1000
+    end
+    object QryOrderDOC_AMOUNT: TFMTBCDField
+      FieldName = 'DOC_AMOUNT'
+      Origin = 'DOC_AMOUNT'
+      Precision = 18
+      Size = 2
+    end
+    object QryOrderDOC_CUST_ID: TIntegerField
+      FieldName = 'DOC_CUST_ID'
+      Origin = 'DOC_CUST_ID'
+      Required = True
+    end
+  end
+  object QryOrderCancel: TFDQuery
+    Connection = CnxCustomers
+    SQL.Strings = (
+      'select * from DOCUMENTS'
+      'where DOC_ID = :DOC_ID'
+      'and DOC_TYPE='#39'O'#39)
+    Left = 768
+    Top = 472
+    ParamData = <
+      item
+        Name = 'DOC_ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object QryOrderCancelDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = 'DOC_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryOrderCancelDOC_TYPE: TWideStringField
+      FieldName = 'DOC_TYPE'
+      Origin = 'DOC_TYPE'
+      Required = True
+      FixedChar = True
+      Size = 1
+    end
+    object QryOrderCancelDOC_DESCRIPTION: TWideStringField
+      FieldName = 'DOC_DESCRIPTION'
+      Origin = 'DOC_DESCRIPTION'
+      Size = 1000
+    end
+    object QryOrderCancelDOC_AMOUNT: TFMTBCDField
+      FieldName = 'DOC_AMOUNT'
+      Origin = 'DOC_AMOUNT'
+      Precision = 18
+      Size = 2
+    end
+    object QryOrderCancelDOC_CUST_ID: TIntegerField
       FieldName = 'DOC_CUST_ID'
       Origin = 'DOC_CUST_ID'
       Required = True

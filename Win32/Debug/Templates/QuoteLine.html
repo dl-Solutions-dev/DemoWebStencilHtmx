@@ -1,0 +1,38 @@
+			<tr id="Row@Quote.DOC_ID">
+			  <td>			  
+					<a href="#" hx-delete="/DeleteQuote?Session=@App.SessionNo&id=@Quote.DOC_ID" hx-confirm="Are you sure to want to delete this quote ?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+						<span class="material-icons">
+						delete
+						</span>
+					</a>
+			  </td>
+			  <td>
+				<button class="btn btn-warning"
+						hx-get="/EditQuoteLineMode?Session=@App.SessionNo&id=@Quote.DOC_ID&col=1"
+						hx-trigger="editQuote"
+						onClick="let editingQuote = document.querySelector('.editingQuote')
+								 if(editingQuote) {
+								   Swal.fire({title: 'Already Editing',
+											  showCancelButton: true,
+											  confirmButtonText: 'Yep, Edit This Row!',
+											  text:'Une ligne est déjà en cours d&#x2019;édition, voulez-vous continuer ?'})
+								   .then((result) => {
+										if(result.isConfirmed) {
+										   htmx.trigger(editingQuote, 'cancelQuote')
+										   htmx.trigger(this, 'editQuote')
+										}
+									})
+								 } else {
+									htmx.trigger(this, 'editQuote')
+								 }">
+				  Edit
+				</button>
+			  </td>
+			  <td>@Quote.DOC_ID</td>
+			  <td id="col1@Quote.DOC_ID">
+				@Quote.DOC_DESCRIPTION
+			  </td>
+			  <td  id="col2@Quote.DOC_ID">
+				@Quote.DOC_AMOUNT
+			  </td>
+			</tr>

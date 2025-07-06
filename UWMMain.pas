@@ -26,7 +26,6 @@ uses
   Web.Stencils,
   UDMSession,
   USessionManager,
-  UHtmlTemplates,
   UConsts;
 
 type

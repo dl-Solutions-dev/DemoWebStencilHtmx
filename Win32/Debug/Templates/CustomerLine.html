@@ -1,0 +1,52 @@
+		<tr id="Row@Customer.CUST_ID">
+			  <td>
+			  
+					<a href="#" hx-delete="/DeleteCustomer?Session=@App.SessionNo&id=@Customer.CUST_ID" hx-confirm="Etes-vous certains de vouloir supprimer cet utilisateur ?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+						<span class="material-icons">
+						delete
+						</span>
+					</a>
+			  </td>
+			  <td>
+					<a href="/DetailsCustomer?Session=@App.SessionNo&CustId=@Customer.CUST_ID">
+						<span class="material-icons">
+						visibility
+						</span>
+					</a>
+			  </td>
+			  <td>
+				<button class="btn btn-warning"
+						hx-get="/EditLineMode?Session=@App.SessionNo&id=@Customer.CUST_ID&col=1"
+						hx-trigger="edit"
+						onClick="let editing = document.querySelector('.editing')
+								 if(editing) {
+								   Swal.fire({title: 'Already Editing',
+											  showCancelButton: true,
+											  confirmButtonText: 'Yep, Edit This Row!',
+											  text:'Une ligne est déjà en cours d&#x2019;édition, voulez-vous continuer ?'})
+								   .then((result) => {
+										if(result.isConfirmed) {
+										   htmx.trigger(editing, 'Cancel')
+										   htmx.trigger(this, 'edit')
+										}
+									})
+								 } else {
+									htmx.trigger(this, 'edit')
+								 }">
+				  Edit
+				</button>
+			  </td>
+			  <td>@Customer.CUST_ID</td>
+			  <td id="col1@Customer.CUST_ID">
+				@Customer.CUST_NAME
+			  </td>
+			  <td  id="col2@Customer.CUST_ID">
+				@Customer.CUST_VILLE
+			  </td>
+			  <td  id="col3@Customer.CUST_ID">
+				@Customer.CUST_PAYS
+			  </td>
+			  <td  id="col4@Customer.CUST_ID">
+				@Customer.CUST_LIB_TYPE
+			  </td>
+			</tr>

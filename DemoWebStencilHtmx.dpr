@@ -26,7 +26,6 @@ uses
   UWMMain in 'UWMMain.pas' {WMMain: TWebModule},
   UDMSession in 'UDMSession.pas' {DMSession: TDataModule},
   USessionManager in 'USessionManager.pas',
-  UHtmlTemplates in 'UHtmlTemplates.pas',
   UConsts in 'UConsts.pas',
   uBaseController in 'uBaseController.pas',
   uInterfaces in 'uInterfaces.pas',
@@ -34,7 +33,7 @@ uses
   UCustomersListController in 'UCustomersListController.pas',
   uInvokerActions in 'uInvokerActions.pas',
   UMenu in 'UMenu.pas',
-  UCustomerDetails in 'UCustomerDetails.pas';
+  UCustomerDetailsController in 'UCustomerDetailsController.pas';
 
 {$R *.res}
 

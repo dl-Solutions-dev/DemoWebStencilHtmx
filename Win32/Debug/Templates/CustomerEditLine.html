@@ -1,0 +1,23 @@
+	<tr hx-trigger='cancel' class='editing' hx-get="/CancelEditLineCustomer?Session=@App.SessionNo&id=@Customer.CUST_ID">
+      <td></td>
+      <td></td>
+      <td>
+        <button class="btn btn-warning" hx-get="/CancelEditLineCustomer?Session=@App.SessionNo&id=@Customer.CUST_ID&col=2">
+          Cancel
+        </button>
+        <button class="btn btn-warning" hx-put="/ApplyCustomer?Session=@App.SessionNo&id=@Customer.CUST_ID" hx-include="closest tr">
+          Save
+        </button>
+      </td>
+      <td>@Customer.CUST_ID</td>
+      <td><input autofocus id="edtName" name='name' value='@Customer.CUST_NAME'></td>
+      <td><input id="edtCity" name='city' value='@Customer.CUST_VILLE'></td>
+      <td><input id="edtCountry" name='country' value='@Customer.CUST_PAYS'></td>
+      <td>
+        <select id="TYPE" name="TYPE">
+		@foreach CustomerTypes {
+			<option value="@loop.CT_TYPE" @if (customer.CUST_TYPE = loop.CT_TYPE){selected}>@loop.CT_LIBELLE</option>
+		}
+		<select>
+      </td>
+    </tr>

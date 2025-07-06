@@ -22,12 +22,17 @@ interface
 const
   // Tags
   TAG_SESSION: string = '[%NoSession%]';
+
   TAG_CUST_ID: string = '[%CustId%]';
-  TAG_NAME:string = '[%Name%]';
-  TAG_CITY:string = '[%City%]';
-  TAG_COUNTRY:string = '[%Country%]';
-  TAG_TYPE:string = '[%Type%]';
+  TAG_NAME: string = '[%Name%]';
+  TAG_CITY: string = '[%City%]';
+  TAG_COUNTRY: string = '[%Country%]';
+  TAG_TYPE: string = '[%Type%]';
   TAG_CB_TYPES_CUSTOMER = '[%CbCustomerTypes%]';
+
+  TAG_QUOTE_ID: string = '[%QuoteId%]';
+  TAG_QUOTE_DESCRIPTION: string = '[%QuoteDescription%]';
+  TAG_QUOTE_AMOUNT: string = '[%QuoteAmount%]';
 
 implementation
 

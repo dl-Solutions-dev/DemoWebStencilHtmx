@@ -1,0 +1,14 @@
+	<tr hx-trigger='cancelQuote' class='editingQuote' hx-get="/CancelEditLineQuote?Session=@App.SessionNo&id=@Quote.DOC_ID">
+      <td></td>
+      <td>
+        <button class="btn btn-warning" hx-get="/CancelEditLineQuote?Session=@App.SessionNo&id=@Quote.DOC_ID&col=2">
+          Cancel
+        </button>
+        <button class="btn btn-warning" hx-put="/ApplyQuote?Session=@App.SessionNo&id=@Quote.DOC_ID" hx-include="closest tr">
+          Save
+        </button>
+      </td>
+      <td>@Quote.DOC_ID</td>
+      <td><input id="edtDescription" name='description' value='@Quote.DOC_DESCRIPTION'></td>
+      <td><input id="edtAmount" name='Amount' value='@Quote.DOC_AMOUNT'></td>
+    </tr>

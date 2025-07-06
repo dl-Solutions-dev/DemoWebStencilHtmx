@@ -30,8 +30,10 @@ type
     FDMSession: TDMSession;
     FIdSession: string;
     FStartDate: TDateTime;
+    FIdCustomer: Integer;
 
     procedure SetIdSession( const Value: string );
+    procedure SetIdCustomer( const Value: Integer );
   public
     constructor Create;
     destructor Destroy; override;
@@ -39,6 +41,7 @@ type
     property IdSession: string read FIdSession write SetIdSession;
     property DMSession: TDMSession read FDMSession;
     property StartDate: TDateTime read FStartDate;
+    property IdCustomer: Integer read FIdCustomer write SetIdCustomer;
   end;
 
   TSessionManager = class
@@ -75,6 +78,11 @@ begin
   FreeAndNil( FDMSession );
 
   inherited;
+end;
+
+procedure TUserSession.SetIdCustomer( const Value: Integer );
+begin
+  FIdCustomer := Value;
 end;
 
 procedure TUserSession.SetIdSession( const Value: string );
