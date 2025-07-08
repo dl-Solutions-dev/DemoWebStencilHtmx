@@ -48,7 +48,6 @@ type
 
 implementation
 
-
 { TCustomersListController }
 
 uses
@@ -78,7 +77,7 @@ begin
         LProcessorEngine.InputFileName := './templates/CustomerAdd.html';
         LProcessorEngine.PathTemplate := './Templates';
 
-        FWebStencilsEngine.AddVar( 'CustomerTypes', LSession.DMSession.qryCustomerTypes, False );
+        LProcessorEngine.AddVar( 'CustomerTypes', LSession.DMSession.qryCustomerTypes, False );
 
         Response.Content := LProcessorEngine.Content;
       finally
@@ -100,8 +99,6 @@ procedure TCustomersListController.ApplyInsertCustomer( Sender: TObject; Request
   Response: TWebResponse; var Handled: Boolean );
 var
   LSession: TUserSession;
-//  LIds: string;
-//  LNoSession: string;
   LProcessorEngine: TWebStencilsProcessor;
 begin
   if ( Request.QueryFields.Values[ 'Session' ] <> '' ) then
@@ -128,10 +125,7 @@ begin
         LSession.DMSession.QryCustomerCUST_TYPE.Value := Request.ContentFields.Values[ 'Type' ];
         LSession.DMSession.QryCustomer.Post;
 
-//        LIds := LSession.DMSession.QryCustomerCUST_ID.Value.ToString;
-//        LNoSession := LSession.IdSession;
-
-          LProcessorEngine.AddVar( 'Customer', LSession.DMSession.QryCustomer, False );
+        LProcessorEngine.AddVar( 'Customer', LSession.DMSession.QryCustomer, False );
 
         Response.Content := LProcessorEngine.Content;
 
@@ -155,52 +149,44 @@ begin
 
   if ( Request.QueryFields.Values[ 'Id' ] <> '' ) and ( TryStrToInt( Request.QueryFields.Values[ 'Id' ], LId ) ) then
   begin
-    if LId <> -1 then
-    begin
-      LProcessorEngine := TWebStencilsProcessor.Create( nil );
+    LProcessorEngine := TWebStencilsProcessor.Create( nil );
+    try
+      LProcessorEngine.Engine := FWebStencilsEngine;
+      LProcessorEngine.InputFileName := './templates/CustomerLine.html';
+      LProcessorEngine.PathTemplate := './Templates';
+
+      LSession.DMSession.CnxCustomers.StartTransaction;
+
+      LSession.DMSession.QryCustomer.close;
+      LSession.DMSession.QryCustomer.ParamByName( 'CUST_ID' ).AsInteger := LId;
+      LSession.DMSession.QryCustomer.Open;
+      LSession.DMSession.QryCustomer.Edit;
+
+      LSession.DMSession.QryCustomerCUST_NAME.Value := Request.ContentFields.Values[ 'Name' ];
+      LSession.DMSession.QryCustomerCUST_VILLE.Value := Request.ContentFields.Values[ 'City' ];
+      LSession.DMSession.QryCustomerCUST_PAYS.Value := Request.ContentFields.Values[ 'Country' ];
+      LSession.DMSession.QryCustomerCUST_TYPE.Value := Request.ContentFields.Values[ 'Type' ];
       try
-        LProcessorEngine.Engine := FWebStencilsEngine;
-        LProcessorEngine.InputFileName := './templates/CustomerLine.html';
-        LProcessorEngine.PathTemplate := './Templates';
-
-        LSession.DMSession.CnxCustomers.StartTransaction;
-
-        LSession.DMSession.QryCustomer.close;
-        LSession.DMSession.QryCustomer.ParamByName( 'CUST_ID' ).AsInteger := LId;
-        LSession.DMSession.QryCustomer.Open;
-        LSession.DMSession.QryCustomer.Edit;
-
-        LSession.DMSession.QryCustomerCUST_NAME.Value := Request.ContentFields.Values[ 'Name' ];
-        LSession.DMSession.QryCustomerCUST_VILLE.Value := Request.ContentFields.Values[ 'City' ];
-        LSession.DMSession.QryCustomerCUST_PAYS.Value := Request.ContentFields.Values[ 'Country' ];
-        LSession.DMSession.QryCustomerCUST_TYPE.Value := Request.ContentFields.Values[ 'Type' ];
-        try
-          LSession.DMSession.QryCustomer.Post;
-          LSession.DMSession.CnxCustomers.Commit;
-        except
-          on e: Exception do
-          begin
-            LSession.DMSession.CnxCustomers.Rollback;
-          end;
+        LSession.DMSession.QryCustomer.Post;
+        LSession.DMSession.CnxCustomers.Commit;
+      except
+        on e: Exception do
+        begin
+          LSession.DMSession.CnxCustomers.Rollback;
         end;
-
-        LIds := Request.QueryFields.Values[ 'Id' ];
-
-          LProcessorEngine.AddVar( 'Customer', LSession.DMSession.QryCustomer, False );
-
-        Response.Content := LProcessorEngine.Content;
-
-        Handled := True;
-      finally
-        FreeAndNil( LProcessorEngine );
       end;
-    end
-    else
-    begin
 
+      LIds := Request.QueryFields.Values[ 'Id' ];
+
+      LProcessorEngine.AddVar( 'Customer', LSession.DMSession.QryCustomer, False );
+
+      Response.Content := LProcessorEngine.Content;
+
+      Handled := True;
+    finally
+      FreeAndNil( LProcessorEngine );
     end;
   end;
-
 end;
 
 procedure TCustomersListController.CancelEditLineCustomer( Sender: TObject; Request: TWebRequest;
@@ -235,8 +221,7 @@ begin
               LIds := LId.ToString;
               LNoSession := LSession.IdSession;
 
-              if not LProcessorEngine.HasVar( 'Customer' ) then
-                FWebStencilsEngine.AddVar( 'Customer', LSession.DMSession.QryCustomerCancel, False );
+              LProcessorEngine.AddVar( 'Customer', LSession.DMSession.QryCustomerCancel, False );
 
               Response.Content := LProcessorEngine.Content;
             end;
@@ -339,8 +324,8 @@ begin
               LSession.DMSession.QryCustomer.Open;
               LSession.DMSession.QryCustomer.First;
 
-              FWebStencilsEngine.AddVar( 'Customer', LSession.DMSession.QryCustomer, False );
-              FWebStencilsEngine.AddVar( 'CustomerTypes', LSession.DMSession.qryCustomerTypes, False );
+              LProcessorEngine.AddVar( 'Customer', LSession.DMSession.QryCustomer, False );
+              LProcessorEngine.AddVar( 'CustomerTypes', LSession.DMSession.qryCustomerTypes, False );
 
               Response.Content := LProcessorEngine.Content;
             finally
@@ -390,14 +375,13 @@ begin
       LProcessorEngine.InputFileName := './templates/CustomersList.html';
       LProcessorEngine.PathTemplate := './Templates';
 
-      FWebStencilsEngine.AddVar( 'Session', LSession, False );
+      LProcessorEngine.AddVar( 'Session', LSession, False );
 
       LSession.DMSession.CnxCustomers.Rollback;
       LSession.DMSession.QryCustomers.close;
       LSession.DMSession.QryCustomers.Open;
 
-      if not LProcessorEngine.HasVar( 'CustomerList' ) then
-        FWebStencilsEngine.AddVar( 'CustomerList', LSession.DMSession.QryCustomers, False );
+      LProcessorEngine.AddVar( 'CustomerList', LSession.DMSession.QryCustomers, False );
 
       Response.Content := LProcessorEngine.Content;
       Handled := True;

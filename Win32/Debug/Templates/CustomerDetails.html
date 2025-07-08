@@ -36,7 +36,19 @@
 		</tbody>
 	</table>
 	
-	<button type="button" id="btnAddQuote" class="btn btn-primary" hx-get="/AddQuote?Session=@App.SessionNo&CustId=@Customer.CUST_ID" hx-target="#QuotesTable" hx-swap="beforeend">Add quote</button>
+	<button type="button" 
+			id="btnAddQuote" 
+			class="btn btn-primary" 
+			hx-trigger="AddQuote"
+			hx-get="/AddQuote?Session=@App.SessionNo&CustId=@Customer.CUST_ID" 
+			hx-target="#QuotesTable" 
+			hx-swap="beforeend"
+			onClick="let addingQuote = document.querySelector('.addingQuote')
+					if(!addingQuote) {
+						htmx.trigger(this, 'AddQuote')
+					}">
+	Add quote
+	</button>
 	<br/>
 	
 @if (Customer.CUST_TYPE="C") {
@@ -59,6 +71,18 @@
 		</tbody>
 	</table>
 	
-	<button type="button" id="btnAddOrder" class="btn btn-primary" hx-get="/AddOrder?Session=@App.SessionNo" hx-target="#OrdersTable" hx-swap="beforeend">Add order</button>
+	<button type="button" 
+			id="btnAddOrder" 
+			class="btn btn-primary" 
+			hx-trigger="AddOrder"
+			hx-get="/AddOrder?Session=@App.SessionNo" 
+			hx-target="#OrdersTable" 
+			hx-swap="beforeend"
+			onClick="let addingOrder = document.querySelector('.addingOrder')
+					if(!addingOrder) {
+						htmx.trigger(this, 'AddOrder')
+					}">
+	Add order
+	</button>
 }
 </div>

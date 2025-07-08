@@ -242,7 +242,6 @@ begin
         LSession.DMSession.QryQuote.Cancel;
         SendEmptyContent( Response );
       end;
-
     end;
   end;
 end;
@@ -258,42 +257,35 @@ begin
 
   if ( Request.QueryFields.Values[ 'Id' ] <> '' ) and ( TryStrToInt( Request.QueryFields.Values[ 'Id' ], LId ) ) then
   begin
-    if LId <> -1 then
-    begin
-      LSession.DMSession.CnxCustomers.StartTransaction;
+    LSession.DMSession.CnxCustomers.StartTransaction;
 
-      LSession.DMSession.QryOrder.Close;
-      LSession.DMSession.QryOrder.ParamByName( 'DOC_ID' ).AsInteger := LId;
-      LSession.DMSession.QryOrder.Open;
-      LSession.DMSession.QryOrder.Edit;
+    LSession.DMSession.QryOrder.Close;
+    LSession.DMSession.QryOrder.ParamByName( 'DOC_ID' ).AsInteger := LId;
+    LSession.DMSession.QryOrder.Open;
+    LSession.DMSession.QryOrder.Edit;
 
-      LSession.DMSession.QryOrderDOC_DESCRIPTION.Value := Request.ContentFields.Values[ 'Description' ];
-      LSession.DMSession.QryOrderDOC_AMOUNT.Value := Request.ContentFields.Values[ 'Amount' ];
-      try
-        LSession.DMSession.QryOrder.Post;
-        LSession.DMSession.CnxCustomers.Commit;
-      except
-        on e: Exception do
-        begin
-          LSession.DMSession.CnxCustomers.Rollback;
-        end;
+    LSession.DMSession.QryOrderDOC_DESCRIPTION.Value := Request.ContentFields.Values[ 'Description' ];
+    LSession.DMSession.QryOrderDOC_AMOUNT.Value := Request.ContentFields.Values[ 'Amount' ];
+    try
+      LSession.DMSession.QryOrder.Post;
+      LSession.DMSession.CnxCustomers.Commit;
+    except
+      on e: Exception do
+      begin
+        LSession.DMSession.CnxCustomers.Rollback;
       end;
-      LProcessorEngine := TWebStencilsProcessor.Create( nil );
-      try
-        LProcessorEngine.Engine := FWebStencilsEngine;
-        LProcessorEngine.InputFileName := './templates/OrderLine.html';
-        LProcessorEngine.PathTemplate := './Templates';
+    end;
+    LProcessorEngine := TWebStencilsProcessor.Create( nil );
+    try
+      LProcessorEngine.Engine := FWebStencilsEngine;
+      LProcessorEngine.InputFileName := './templates/OrderLine.html';
+      LProcessorEngine.PathTemplate := './Templates';
 
-        LProcessorEngine.AddVar( 'Order', LSession.DMSession.QryOrder, False );
+      LProcessorEngine.AddVar( 'Order', LSession.DMSession.QryOrder, False );
 
-        Response.Content := LProcessorEngine.Content;
-      finally
-        FreeAndNil( LProcessorEngine );
-      end;
-    end
-    else
-    begin
-
+      Response.Content := LProcessorEngine.Content;
+    finally
+      FreeAndNil( LProcessorEngine );
     end;
   end;
 end;
@@ -309,42 +301,35 @@ begin
 
   if ( Request.QueryFields.Values[ 'Id' ] <> '' ) and ( TryStrToInt( Request.QueryFields.Values[ 'Id' ], LId ) ) then
   begin
-    if LId <> -1 then
-    begin
-      LSession.DMSession.CnxCustomers.StartTransaction;
+    LSession.DMSession.CnxCustomers.StartTransaction;
 
-      LSession.DMSession.QryQuote.Close;
-      LSession.DMSession.QryQuote.ParamByName( 'DOC_ID' ).AsInteger := LId;
-      LSession.DMSession.QryQuote.Open;
-      LSession.DMSession.QryQuote.Edit;
+    LSession.DMSession.QryQuote.Close;
+    LSession.DMSession.QryQuote.ParamByName( 'DOC_ID' ).AsInteger := LId;
+    LSession.DMSession.QryQuote.Open;
+    LSession.DMSession.QryQuote.Edit;
 
-      LSession.DMSession.QryQuoteDOC_DESCRIPTION.Value := Request.ContentFields.Values[ 'Description' ];
-      LSession.DMSession.QryQuoteDOC_AMOUNT.Value := Request.ContentFields.Values[ 'Amount' ];
-      try
-        LSession.DMSession.QryQuote.Post;
-        LSession.DMSession.CnxCustomers.Commit;
-      except
-        on e: Exception do
-        begin
-          LSession.DMSession.CnxCustomers.Rollback;
-        end;
+    LSession.DMSession.QryQuoteDOC_DESCRIPTION.Value := Request.ContentFields.Values[ 'Description' ];
+    LSession.DMSession.QryQuoteDOC_AMOUNT.Value := Request.ContentFields.Values[ 'Amount' ];
+    try
+      LSession.DMSession.QryQuote.Post;
+      LSession.DMSession.CnxCustomers.Commit;
+    except
+      on e: Exception do
+      begin
+        LSession.DMSession.CnxCustomers.Rollback;
       end;
-      LProcessorEngine := TWebStencilsProcessor.Create( nil );
-      try
-        LProcessorEngine.Engine := FWebStencilsEngine;
-        LProcessorEngine.InputFileName := './templates/QuoteLine.html';
-        LProcessorEngine.PathTemplate := './Templates';
+    end;
+    LProcessorEngine := TWebStencilsProcessor.Create( nil );
+    try
+      LProcessorEngine.Engine := FWebStencilsEngine;
+      LProcessorEngine.InputFileName := './templates/QuoteLine.html';
+      LProcessorEngine.PathTemplate := './Templates';
 
-        LProcessorEngine.AddVar( 'Quote', LSession.DMSession.QryQuote, False );
+      LProcessorEngine.AddVar( 'Quote', LSession.DMSession.QryQuote, False );
 
-        Response.Content := LProcessorEngine.Content;
-      finally
-        FreeAndNil( LProcessorEngine );
-      end;
-    end
-    else
-    begin
-
+      Response.Content := LProcessorEngine.Content;
+    finally
+      FreeAndNil( LProcessorEngine );
     end;
   end;
 end;
@@ -565,7 +550,7 @@ begin
       LProcessorEngine.InputFileName := './templates/CustomerDetails.html';
       LProcessorEngine.PathTemplate := './Templates';
 
-      FWebStencilsEngine.AddVar( 'Session', LSession, False );
+      LProcessorEngine.AddVar( 'Session', LSession, False );
 
       LSession.DMSession.CnxCustomers.Rollback;
       LSession.DMSession.QryCustomerTotQuotes.Close;

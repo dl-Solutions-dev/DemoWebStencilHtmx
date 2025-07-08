@@ -33,5 +33,17 @@ function confirmDelete(aForm){
 		</tbody>
 	</table>
 	
-	<button type="button" id="btnAddCustomer" class="btn btn-primary" hx-get="/AddCustomer?Session=@App.SessionNo" hx-target="#TableCustomers" hx-swap="beforeend">Add customer</button>
+	<button type="button" 
+			id="btnAddCustomer" 
+			class="btn btn-primary" 
+			hx-trigger="AddCustomer"
+			hx-get="/AddCustomer?Session=@App.SessionNo" 
+			hx-target="#TableCustomers" 
+			hx-swap="beforeend"
+			onClick="let addingCustomer = document.querySelector('.addingCustomer')
+					if(!addingCustomer) {
+						htmx.trigger(this, 'AddCustomer')
+					}">
+	Add customer
+	</button>
 </div>
