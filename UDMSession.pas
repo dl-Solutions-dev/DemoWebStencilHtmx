@@ -42,7 +42,8 @@ uses
   FireDAC.Comp.DataSet,
   FireDAC.Comp.Client,
   System.SyncObjs,
-  Datasnap.DBClient;
+  Datasnap.DBClient,
+  Web.HTTPApp;
 
 type
   TDMSession = class( TDataModule )
@@ -119,10 +120,15 @@ type
     procedure QryCustomersCalcFields( DataSet: TDataSet );
   private
     FCritical: TCriticalSection;
+    FIdCustomer: Integer;
+    procedure SetIdCustomer(const Value: Integer);
     { Déclarations privées }
   public
     { Déclarations publiques }
+    function LoginUser(aRequest:TWebRequest):Boolean;
+
     property Critical: TCriticalSection read FCritical;
+    property IdCustomer:Integer read FIdCustomer write SetIdCustomer;
   end;
 
 var
@@ -146,6 +152,18 @@ begin
   FreeAndNil( FCritical );
 end;
 
+function TDMSession.LoginUser(aRequest: TWebRequest): Boolean;
+begin
+  if ( aRequest.ContentFields.Values[ 'UserName' ] = 't' ) and ( aRequest.ContentFields.Values[ 'Password' ] = 't' ) then
+  begin
+    Result:=True;
+  end
+  else
+  begin
+    Result:=False;
+  end;
+end;
+
 procedure TDMSession.QryCustomersCalcFields( DataSet: TDataSet );
 begin
   if DataSet.FieldByName( 'CUST_TYPE' ).AsString = 'C' then
@@ -156,6 +174,11 @@ begin
   begin
     DataSet.FieldByName( 'CUST_LIB_TYPE' ).AsString := 'Prospect';
   end;
+end;
+
+procedure TDMSession.SetIdCustomer(const Value: Integer);
+begin
+  FIdCustomer := Value;
 end;
 
 end.

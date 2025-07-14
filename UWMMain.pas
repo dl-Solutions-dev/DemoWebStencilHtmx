@@ -33,10 +33,13 @@ type
     wsEngineCustomers: TWebStencilsEngine;
     WebFileDispatcher: TWebFileDispatcher;
     wspIndex: TWebStencilsProcessor;
+    wspBadLogin: TWebStencilsProcessor;
     procedure WebModuleCreate( Sender: TObject );
     procedure WMMainDefaultHandlerAction( Sender: TObject; Request: TWebRequest;
       Response: TWebResponse; var Handled: Boolean );
     procedure WebModuleBeforeDispatch( Sender: TObject; Request: TWebRequest;
+      Response: TWebResponse; var Handled: Boolean );
+    procedure WMMainWaLoginAction( Sender: TObject; Request: TWebRequest;
       Response: TWebResponse; var Handled: Boolean );
   private
     { Déclarations privées }
@@ -92,6 +95,8 @@ end;
 
 procedure TWMMain.WebModuleBeforeDispatch( Sender: TObject; Request: TWebRequest;
   Response: TWebResponse; var Handled: Boolean );
+var
+  wT: TextFile;
 begin
   if ( Request.QueryFields.Values[ 'Session' ] = '' ) then
   begin
@@ -103,6 +108,13 @@ begin
   end;
 
   FUserSession := TSessionManager.GetInstance.GetSession( FSessionNo );
+  if Assigned( FUserSession ) then
+  begin
+    if not( FUserSession.Authenticated ) and ( CompareStr( Request.PathInfo, '/Login' ) <> 0 ) then
+    begin
+      FUserSession.PathInfo := Request.PathInfo + '?' + Request.Query;
+    end;
+  end;
 end;
 
 procedure TWMMain.WebModuleCreate( Sender: TObject );
@@ -119,6 +131,24 @@ procedure TWMMain.WMMainDefaultHandlerAction( Sender: TObject;
 begin
   Response.Content := wspIndex.Content;
   Handled := True;
+end;
+
+procedure TWMMain.WMMainWaLoginAction( Sender: TObject; Request: TWebRequest;
+  Response: TWebResponse; var Handled: Boolean );
+begin
+  if Assigned( FUserSession ) then
+  begin
+    if ( FUserSession.DMSession.LoginUser( Request ) ) then
+    begin
+      FUserSession.Authenticated := True;
+
+      Response.SendRedirect( '.' + FUserSession.PathInfo );
+    end
+    else
+    begin
+      Response.Content := wspBadLogin.Content;
+    end;
+  end;
 end;
 
 end.

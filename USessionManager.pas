@@ -30,10 +30,16 @@ type
     FDMSession: TDMSession;
     FIdSession: string;
     FStartDate: TDateTime;
-    FIdCustomer: Integer;
+    FAuthenticated: Boolean;
+    FPathInfo: string;
+    FActive: Boolean;
+    FLastUsed: TDateTime;
 
     procedure SetIdSession( const Value: string );
-    procedure SetIdCustomer( const Value: Integer );
+    procedure SetAuthenticated( const Value: Boolean );
+    procedure SetPathInfo( const Value: string );
+    procedure SetActive( const Value: Boolean );
+    procedure SetLastUsed( const Value: TDateTime );
   public
     constructor Create;
     destructor Destroy; override;
@@ -41,15 +47,27 @@ type
     property IdSession: string read FIdSession write SetIdSession;
     property DMSession: TDMSession read FDMSession;
     property StartDate: TDateTime read FStartDate;
-    property IdCustomer: Integer read FIdCustomer write SetIdCustomer;
+    property LastUsed: TDateTime read FLastUsed write SetLastUsed;
+    property Authenticated: Boolean read FAuthenticated write SetAuthenticated;
+    property PathInfo: string read FPathInfo write SetPathInfo;
+    property Active: Boolean read FActive write SetActive;
+  end;
+
+  TThrdSessionsLife = class( TThread )
+  public
+    procedure Execute; override;
   end;
 
   TSessionManager = class
   private
     FSessionList: TThreadList;
+    FSessionTimeOut: Integer;
+    FThrdSessionLife: TThrdSessionsLife;
 
     class var
       FInstance: TSessionManager;
+
+    procedure SetSessionTimeOut( const Value: Integer );
   public
     constructor Create;
     destructor Destroy; override;
@@ -58,12 +76,16 @@ type
 
     function CreateSession: string;
     function GetSession( aIdSession: string ): TUserSession;
+
+    property SessionTimeOut: Integer read FSessionTimeOut write SetSessionTimeOut;
+    property SessionsList: TThreadList read FSessionList;
   end;
 
 implementation
 
 uses
-  System.Hash;
+  System.Hash,
+  System.DateUtils;
 
 { TUserSession }
 
@@ -71,6 +93,7 @@ constructor TUserSession.Create;
 begin
   FDMSession := TDMSession.Create( nil );
   FStartDate := Now;
+  FActive := True;
 end;
 
 destructor TUserSession.Destroy;
@@ -80,9 +103,19 @@ begin
   inherited;
 end;
 
-procedure TUserSession.SetIdCustomer( const Value: Integer );
+procedure TUserSession.SetActive( const Value: Boolean );
 begin
-  FIdCustomer := Value;
+  FActive := Value;
+
+  if not( FActive ) then
+  begin
+    FreeAndNil( FDMSession );
+  end;
+end;
+
+procedure TUserSession.SetAuthenticated( const Value: Boolean );
+begin
+  FAuthenticated := Value;
 end;
 
 procedure TUserSession.SetIdSession( const Value: string );
@@ -90,11 +123,24 @@ begin
   FIdSession := Value;
 end;
 
+procedure TUserSession.SetLastUsed( const Value: TDateTime );
+begin
+  FLastUsed := Value;
+end;
+
+procedure TUserSession.SetPathInfo( const Value: string );
+begin
+  FPathInfo := Value;
+end;
+
 { TSessionManager }
 
 constructor TSessionManager.Create;
 begin
   FSessionList := TThreadList.Create;
+  FThrdSessionLife := TThrdSessionsLife.Create;
+
+  FSessionTimeOut := 30000;
 end;
 
 function TSessionManager.CreateSession: string;
@@ -106,6 +152,7 @@ begin
 
   LSession := TUserSession.Create;
   LSession.IdSession := THashSHA1.GetHashString( LGUID.ToString );
+  LSession.Authenticated := False;
 
   FSessionList.Add( LSession );
 
@@ -116,6 +163,8 @@ destructor TSessionManager.Destroy;
 var
   LList: TList;
 begin
+  FThrdSessionLife.Terminate;
+
   LList := FSessionList.LockList;
   try
     for var i := 0 to LList.Count - 1 do
@@ -127,6 +176,7 @@ begin
   end;
 
   FreeAndNil( FSessionList );
+  FreeAndNil( FThrdSessionLife );
 
   inherited;
 end;
@@ -151,14 +201,49 @@ begin
   try
     for var i := 0 to LList.Count - 1 do
     begin
-      if ( TUserSession( LList[ i ] ).IdSession = aIdSession ) then
+      if ( TUserSession( LList[ i ] ).IdSession = aIdSession ) and (TUserSession( LList[ i ] ).Active) then
       begin
+        TUserSession( LList[ i ] ).LastUsed := Now;
+
         Exit( TUserSession( LList[ i ] ) );
       end;
     end;
   finally
     FSessionList.UnlockList;
   end;
+end;
+
+procedure TSessionManager.SetSessionTimeOut( const Value: Integer );
+begin
+  FSessionTimeOut := Value;
+end;
+
+{ TThrdSessionsLife }
+
+procedure TThrdSessionsLife.Execute;
+var
+  LSessionsList: TList;
+  LSessionManager: TSessionManager;
+begin
+  LSessionManager := TSessionManager.GetInstance;
+
+  repeat
+    LSessionsList := LSessionManager.SessionsList.LockList;
+
+    try
+      for var i := 0 to LSessionsList.Count - 1 do
+      begin
+        if ( MilliSecondsBetween( TUserSession( LSessionsList[ i ] ).LastUsed, Now ) > TSessionManager.GetInstance.SessionTimeOut ) then
+        begin
+          TUserSession( LSessionsList[ i ] ).Active := False;
+        end;
+      end;
+    finally
+      LSessionManager.FSessionList.UnlockList;
+    end;
+
+    Sleep( 10000 );
+  until Terminated;
 end;
 
 end.

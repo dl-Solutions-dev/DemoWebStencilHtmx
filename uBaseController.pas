@@ -36,6 +36,7 @@ type
     FWebModule: TWebModule;
 
     function PickList( aListe: TFDQuery; aPickListName, aCSSClass, aKey, aValue, aSelectedValue: string ): string;
+    function LoginUser: string;
 
     procedure SendEmptyContent( aResponse: TWebResponse );
   public
@@ -69,6 +70,22 @@ begin
   except
     on E: Exception do
       WriteLn( 'TTasksController.Create: ' + E.Message );
+  end;
+end;
+
+function TBaseController.LoginUser: string;
+var
+  LProcessorEngine: TWebStencilsProcessor;
+begin
+  LProcessorEngine := TWebStencilsProcessor.Create( nil );
+  try
+    LProcessorEngine.Engine := FWebStencilsEngine;
+    LProcessorEngine.InputFileName := './templates/Login.html';
+    LProcessorEngine.PathTemplate := './Templates';
+
+    Result := LProcessorEngine.Content;
+  finally
+    FreeAndNil( LProcessorEngine )
   end;
 end;
 

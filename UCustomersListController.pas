@@ -369,24 +369,31 @@ begin
 
   if Assigned( LSession ) then
   begin
-    LProcessorEngine := TWebStencilsProcessor.Create( nil );
-    try
-      LProcessorEngine.Engine := FWebStencilsEngine;
-      LProcessorEngine.InputFileName := './templates/CustomersList.html';
-      LProcessorEngine.PathTemplate := './Templates';
+    if LSession.Authenticated then
+    begin
+      LProcessorEngine := TWebStencilsProcessor.Create( nil );
+      try
+        LProcessorEngine.Engine := FWebStencilsEngine;
+        LProcessorEngine.InputFileName := './templates/CustomersList.html';
+        LProcessorEngine.PathTemplate := './Templates';
+        LProcessorEngine.UserLoggedIn := True;
+        LProcessorEngine.AddVar( 'Session', LSession, False );
 
-      LProcessorEngine.AddVar( 'Session', LSession, False );
+        LSession.DMSession.CnxCustomers.Rollback;
+        LSession.DMSession.QryCustomers.close;
+        LSession.DMSession.QryCustomers.Open;
 
-      LSession.DMSession.CnxCustomers.Rollback;
-      LSession.DMSession.QryCustomers.close;
-      LSession.DMSession.QryCustomers.Open;
+        LProcessorEngine.AddVar( 'CustomerList', LSession.DMSession.QryCustomers, False );
 
-      LProcessorEngine.AddVar( 'CustomerList', LSession.DMSession.QryCustomers, False );
-
-      Response.Content := LProcessorEngine.Content;
-      Handled := True;
-    finally
-      FreeAndNil( LProcessorEngine )
+        Response.Content := LProcessorEngine.Content;
+        Handled := True;
+      finally
+        FreeAndNil( LProcessorEngine )
+      end;
+    end
+    else
+    begin
+      Response.Content := LoginUser;
     end;
   end
   else

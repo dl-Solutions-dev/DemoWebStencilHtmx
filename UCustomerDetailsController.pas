@@ -84,7 +84,7 @@ begin
         LProcessorEngine.PathTemplate := './Templates';
 
         LSession.DMSession.QryCustomer.Close;
-        LSession.DMSession.QryCustomer.ParamByName( 'CUST_ID' ).AsInteger := LSession.IdCustomer;
+        LSession.DMSession.QryCustomer.ParamByName( 'CUST_ID' ).AsInteger := LSession.DMSession.IdCustomer;
         LSession.DMSession.QryCustomer.Open;
 
         LProcessorEngine.AddVar( 'Customer', LSession.DMSession.QryCustomer, False );
@@ -543,7 +543,7 @@ begin
   begin
     if TryStrToInt( Request.QueryFields.Values[ 'CustId' ], LCustId ) then
     begin
-      LSession.IdCustomer := LCustId;
+      LSession.DMSession.IdCustomer := LCustId;
 
       LProcessorEngine := TWebStencilsProcessor.Create( nil );
       LProcessorEngine.Engine := FWebStencilsEngine;

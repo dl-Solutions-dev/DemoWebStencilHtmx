@@ -6,6 +6,11 @@ object WMMain: TWMMain
       Name = 'DefaultHandler'
       PathInfo = '/'
       OnAction = WMMainDefaultHandlerAction
+    end
+    item
+      Name = 'WaLogin'
+      PathInfo = '/Login'
+      OnAction = WMMainWaLoginAction
     end>
   BeforeDispatch = WebModuleBeforeDispatch
   Height = 460
@@ -65,6 +70,13 @@ object WMMain: TWMMain
     InputFileName = './templates/Index.html'
     PathTemplate = './Templates'
     Left = 128
+    Top = 216
+  end
+  object wspBadLogin: TWebStencilsProcessor
+    Engine = wsEngineCustomers
+    InputFileName = './templates/BadLogin.html'
+    PathTemplate = './Templates'
+    Left = 304
     Top = 216
   end
 end
