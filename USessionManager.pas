@@ -1,8 +1,17 @@
 ﻿(* C2PP
   ***************************************************************************
 
-  Copyright D. LEBLANC 2025
-  Ce programme peut être copié et utilisé librement.
+  Copyright 2025 Dany Leblanc under AGPL 3.0 license.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+  OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+  OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
 
   ***************************************************************************
 
@@ -10,8 +19,8 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-07-04T19:57:52.000+02:00
-  Signature : 9e856112c2d57d69c698eac66173b16245a1c849
+  File last update : 2025-07-26T19:04:36.000+02:00
+  Signature : 10efc7a8d8a662a5a3d3d6e2a44a78fbb6d25e3b
   ***************************************************************************
 *)
 
@@ -140,7 +149,7 @@ begin
   FSessionList := TThreadList.Create;
   FThrdSessionLife := TThrdSessionsLife.Create;
 
-  FSessionTimeOut := 30000;
+  FSessionTimeOut := 60 * 1000 * 30; // 30 minutes
 end;
 
 function TSessionManager.CreateSession: string;
@@ -201,7 +210,7 @@ begin
   try
     for var i := 0 to LList.Count - 1 do
     begin
-      if ( TUserSession( LList[ i ] ).IdSession = aIdSession ) and (TUserSession( LList[ i ] ).Active) then
+      if ( TUserSession( LList[ i ] ).IdSession = aIdSession ) and ( TUserSession( LList[ i ] ).Active ) then
       begin
         TUserSession( LList[ i ] ).LastUsed := Now;
 

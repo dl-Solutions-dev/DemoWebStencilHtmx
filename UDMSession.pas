@@ -1,8 +1,17 @@
 (* C2PP
   ***************************************************************************
 
-  Copyright D. LEBLANC 2025
-  Ce programme peut être copié et utilisé librement.
+  Copyright 2025 Dany Leblanc under AGPL 3.0 license.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+  OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+  OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
 
   ***************************************************************************
 
@@ -10,8 +19,8 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-07-05T23:32:46.000+02:00
-  Signature : 1809c1e6fdb0c909e8b618a59b4bd83c4f17a3e9
+  File last update : 2025-07-26T19:14:04.000+02:00
+  Signature : e7159d07f69403b89061175247d00ae6d254e7d6
   ***************************************************************************
 *)
 
@@ -115,6 +124,7 @@ type
     QryOrderDOC_DESCRIPTION: TWideStringField;
     QryOrderDOC_AMOUNT: TFMTBCDField;
     QryOrderDOC_CUST_ID: TIntegerField;
+    QryCustomerCancelCUST_LIB_TYPE: TStringField;
     procedure DataModuleCreate( Sender: TObject );
     procedure DataModuleDestroy( Sender: TObject );
     procedure QryCustomersCalcFields( DataSet: TDataSet );

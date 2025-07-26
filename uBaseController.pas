@@ -1,8 +1,17 @@
 ﻿(* C2PP
   ***************************************************************************
 
-  Copyright D. LEBLANC 2025
-  Ce programme peut être copié et utilisé librement.
+  Copyright 2025 Dany Leblanc under AGPL 3.0 license.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+  OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+  OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
 
   ***************************************************************************
 
@@ -10,8 +19,8 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-07-05T18:00:34.000+02:00
-  Signature : a3da069154ec278374c13e9e4d0cb248d952edd9
+  File last update : 2025-07-26T19:22:46.000+02:00
+  Signature : 66b6beb2b2f1973163a65adaac9a3c6c8b603479
   ***************************************************************************
 *)
 
@@ -33,14 +42,13 @@ type
   protected
     FWebStencilsProcessor: TWebStencilsProcessor;
     FWebStencilsEngine: TWebStencilsEngine;
-    FWebModule: TWebModule;
 
     function PickList( aListe: TFDQuery; aPickListName, aCSSClass, aKey, aValue, aSelectedValue: string ): string;
     function LoginUser: string;
 
     procedure SendEmptyContent( aResponse: TWebResponse );
   public
-    procedure InitializeActions( aWebModule: TWebModule; aWebStencil: TWebStencilsEngine ); virtual;
+    procedure InitializeActions( aWebStencil: TWebStencilsEngine ); virtual;
     procedure CheckSession( Request: TWebRequest );
   end;
 
@@ -59,14 +67,12 @@ begin
   end;
 end;
 
-procedure TBaseController.InitializeActions( aWebModule: TWebModule;
-  aWebStencil: TWebStencilsEngine );
+procedure TBaseController.InitializeActions( aWebStencil: TWebStencilsEngine );
 begin
   try
     FWebStencilsEngine := aWebStencil;
     FWebStencilsProcessor := TWebStencilsProcessor.Create( nil );
     FWebStencilsProcessor.Engine := FWebStencilsEngine;
-    FWebModule := aWebModule;
   except
     on E: Exception do
       WriteLn( 'TTasksController.Create: ' + E.Message );

@@ -1,8 +1,17 @@
 ﻿(* C2PP
   ***************************************************************************
 
-  Copyright D. LEBLANC 2025
-  Ce programme peut être copié et utilisé librement.
+  Copyright 2025 Dany Leblanc under AGPL 3.0 license.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+  OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+  OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
 
   ***************************************************************************
 
@@ -10,7 +19,7 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-07-02T23:53:18.490+02:00
+  File last update : 2025-07-06T00:15:09.672+02:00
   Signature : 02c9e7efb3d19c20ce444be45011621b10c39b0c
   ***************************************************************************
 *)

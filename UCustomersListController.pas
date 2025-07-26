@@ -1,8 +1,17 @@
 (* C2PP
   ***************************************************************************
 
-  Copyright D. LEBLANC 2025
-  Ce programme peut être copié et utilisé librement.
+  Copyright 2025 Dany Leblanc under AGPL 3.0 license.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+  OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+  OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+  DEALINGS IN THE SOFTWARE.
 
   ***************************************************************************
 
@@ -10,8 +19,8 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-07-05T21:56:06.000+02:00
-  Signature : 9b891d0fbfc3691646c12da9460a46b3683d0482
+  File last update : 2025-07-26T19:15:20.000+02:00
+  Signature : 132f3369e430fc2241289b86266f8ffdb4b05be8
   ***************************************************************************
 *)
 
@@ -67,7 +76,7 @@ var
 begin
   if ( Request.QueryFields.Values[ 'Session' ] <> '' ) then
   begin
-    LSession := TWMMain( FWebModule ).UserSession;
+    LSession := UserSession( Sender );
 
     if Assigned( LSession ) then
     begin
@@ -103,7 +112,7 @@ var
 begin
   if ( Request.QueryFields.Values[ 'Session' ] <> '' ) then
   begin
-    LSession := TWMMain( FWebModule ).UserSession;
+    LSession := UserSession( Sender );
 
     if Assigned( LSession ) then
     begin
@@ -145,7 +154,7 @@ var
   LIds: string;
   LProcessorEngine: TWebStencilsProcessor;
 begin
-  LSession := TWMMain( FWebModule ).UserSession;
+  LSession := UserSession( Sender );
 
   if ( Request.QueryFields.Values[ 'Id' ] <> '' ) and ( TryStrToInt( Request.QueryFields.Values[ 'Id' ], LId ) ) then
   begin
@@ -199,7 +208,7 @@ var
 begin
   if ( Request.QueryFields.Values[ 'Session' ] <> '' ) then
   begin
-    LSession := TWMMain( FWebModule ).UserSession;
+    LSession := UserSession( Sender );
     if Assigned( LSession ) then
     begin
       if TryStrToInt( Request.QueryFields.Values[ 'Id' ], LId ) then
@@ -250,7 +259,7 @@ var
 begin
   if ( Request.QueryFields.Values[ 'Session' ] <> '' ) then
   begin
-    LSession := TWMMain( FWebModule ).UserSession;
+    LSession := UserSession( Sender );
 
     if Assigned( LSession ) then
     begin
@@ -301,7 +310,7 @@ var
 begin
   if ( Request.QueryFields.Values[ 'Session' ] <> '' ) then
   begin
-    LSession := TWMMain( FWebModule ).UserSession;
+    LSession := UserSession( Sender );
 
     if Assigned( LSession ) then
     begin
@@ -365,7 +374,7 @@ var
   LSession: TUserSession;
   LProcessorEngine: TWebStencilsProcessor;
 begin
-  LSession := TWMMain( FWebModule ).UserSession;
+  LSession := UserSession( Sender );
 
   if Assigned( LSession ) then
   begin

@@ -1,8 +1,17 @@
 ﻿(* C2PP
   ***************************************************************************
 
-  Copyright D. LEBLANC 2025
-  Ce programme peut être copié et utilisé librement.
+  Copyright 2025 Dany Leblanc under AGPL 3.0 license.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+  OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+  OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
 
   ***************************************************************************
 
@@ -10,8 +19,8 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-07-02T23:53:18.486+02:00
-  Signature : 54fbb0cb54d0c1387e1a12b0c0048fbeaa8ff802
+  File last update : 2025-07-26T19:37:26.000+02:00
+  Signature : bbff831e45be083bcb0ae2b006da1cc2137a651a
   ***************************************************************************
 *)
 
@@ -20,8 +29,11 @@ unit uInvokerActions;
 interface
 
 uses
-  Classes, System.SysUtils, Web.HTTPApp,
-  Web.Stencils, uInterfaces;
+  Classes,
+  System.SysUtils,
+  Web.HTTPApp,
+  Web.Stencils,
+  uInterfaces;
 
 type
   TInvokerActions = class( TInterfacedObject, IInvokeAction )
@@ -40,8 +52,8 @@ type
     // IInvokeAction
     procedure AddAction( aAction: IAction );
     procedure RemoveAction( aAction: IAction );
-    procedure InitializeActions( aWebModule:TWebModule; aWebStencil:TWebStencilsEngine );
-//    procedure LogParametres( ASession: TIWApplication );
+    procedure InitializeActions( aWebStencil: TWebStencilsEngine );
+    // procedure LogParametres( ASession: TIWApplication );
   end;
 
 implementation
@@ -96,17 +108,17 @@ begin
   Result := FInvoker;
 end;
 
-//procedure TInvokerActions.LogParametres( ASession: TIWApplication );
-//var
-//  I: Integer;
-//begin
-//  for I := 0 to ASession.RunParams.Count - 1 do
-//  begin
-//    AddTrace( trInformation, ASession.RunParams.Names[ I ] + ' -> ' + ASession.RunParams.ValueFromIndex[ I ] );
-//  end;
-//end;
+// procedure TInvokerActions.LogParametres( ASession: TIWApplication );
+// var
+// I: Integer;
+// begin
+// for I := 0 to ASession.RunParams.Count - 1 do
+// begin
+// AddTrace( trInformation, ASession.RunParams.Names[ I ] + ' -> ' + ASession.RunParams.ValueFromIndex[ I ] );
+// end;
+// end;
 
-procedure TInvokerActions.InitializeActions( aWebModule:TWebModule; aWebStencil:TWebStencilsEngine );
+procedure TInvokerActions.InitializeActions( aWebStencil: TWebStencilsEngine );
 var
   I: Integer;
   wHandledAction: Boolean;
@@ -115,7 +127,7 @@ begin
 
   for I := 0 to FActionList.Count - 1 do
   begin
-    IAction( FActionList[ I ] ).InitializeActions( aWebModule, aWebStencil );
+    IAction( FActionList[ I ] ).InitializeActions( aWebStencil );
 
     if wHandledAction then
       Break;

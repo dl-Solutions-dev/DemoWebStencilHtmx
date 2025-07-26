@@ -124,6 +124,7 @@ object DMSession: TDMSession
     end
   end
   object QryCustomerCancel: TFDQuery
+    OnCalcFields = QryCustomersCalcFields
     Connection = CnxCustomers
     SQL.Strings = (
       'select * from CUSTOMERS'
@@ -164,6 +165,12 @@ object DMSession: TDMSession
       Origin = 'CUST_TYPE'
       FixedChar = True
       Size = 1
+    end
+    object QryCustomerCancelCUST_LIB_TYPE: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'CUST_LIB_TYPE'
+      Size = 100
+      Calculated = True
     end
   end
   object qryCustomerTypes: TFDQuery

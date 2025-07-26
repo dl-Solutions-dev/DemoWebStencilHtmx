@@ -1,8 +1,17 @@
 (* C2PP
   ***************************************************************************
 
-  Copyright D. LEBLANC 2025
-  Ce programme peut être copié et utilisé librement.
+  Copyright 2025 Dany Leblanc under AGPL 3.0 license.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+  OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+  OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
 
   ***************************************************************************
 
@@ -10,8 +19,8 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-07-05T21:05:22.000+02:00
-  Signature : 6c21511566e9638a17e77940323245411536b414
+  File last update : 2025-07-26T17:24:20.000+02:00
+  Signature : d519a74c82fafe0038bf8bc13e3be921e5f9e475
   ***************************************************************************
 *)
 
@@ -63,6 +72,8 @@ type
 var
   WebModuleClass: TComponentClass = TWMMain;
 
+function UserSession( aWebActionitem: TObject ): TUserSession;
+
 implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
@@ -72,6 +83,11 @@ uses uInvokerActions;
 
 {$R *.dfm}
 
+
+function UserSession( aWebActionitem: TObject ): TUserSession;
+begin
+  Result := TWMMain( TWebActionItem( aWebActionitem ).Collection.Owner ).UserSession;
+end;
 
 procedure TWMMain.SetSessionNo( const Value: string );
 begin
