@@ -19,8 +19,8 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-07-26T19:32:50.000+02:00
-  Signature : 8676413d140ea012a17f8dc03cdc492f3fb96889
+  File last update : 2025-07-26T19:59:26.000+02:00
+  Signature : 2437ff3c4e582ed46eae691a7e4979951f917a24
   ***************************************************************************
 *)
 
@@ -37,14 +37,14 @@ type
 
   IAction = interface
     ['{EDD3F333-F82D-4618-B49D-450E02D3C16C}']
-    procedure InitializeActions( aWebStencil:TWebStencilsEngine );
+    procedure InitializeActions( aWebModule: TWebModule; aWebStencil:TWebStencilsEngine );
   end;
 
   IInvokeAction = interface
     ['{D75EDAD9-1C9E-43AF-8A9A-1F164703335E}']
     procedure AddAction( aAction : IAction);
     procedure RemoveAction( aAction: IAction);
-    procedure InitializeActions( aWebStencil:TWebStencilsEngine);
+    procedure InitializeActions( aWebModule: TWebModule; aWebStencil:TWebStencilsEngine);
   end;
 
 implementation

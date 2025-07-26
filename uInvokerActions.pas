@@ -19,8 +19,8 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-07-26T19:37:26.000+02:00
-  Signature : bbff831e45be083bcb0ae2b006da1cc2137a651a
+  File last update : 2025-07-26T20:01:06.000+02:00
+  Signature : 5702d4e0aaa2773a0a9a08a4a4416d0398f7203d
   ***************************************************************************
 *)
 
@@ -52,7 +52,7 @@ type
     // IInvokeAction
     procedure AddAction( aAction: IAction );
     procedure RemoveAction( aAction: IAction );
-    procedure InitializeActions( aWebStencil: TWebStencilsEngine );
+    procedure InitializeActions( aWebModule: TWebModule; aWebStencil: TWebStencilsEngine );
     // procedure LogParametres( ASession: TIWApplication );
   end;
 
@@ -118,7 +118,7 @@ end;
 // end;
 // end;
 
-procedure TInvokerActions.InitializeActions( aWebStencil: TWebStencilsEngine );
+procedure TInvokerActions.InitializeActions( aWebModule: TWebModule; aWebStencil: TWebStencilsEngine );
 var
   I: Integer;
   wHandledAction: Boolean;
@@ -127,7 +127,7 @@ begin
 
   for I := 0 to FActionList.Count - 1 do
   begin
-    IAction( FActionList[ I ] ).InitializeActions( aWebStencil );
+    IAction( FActionList[ I ] ).InitializeActions( aWebModule, aWebStencil );
 
     if wHandledAction then
       Break;

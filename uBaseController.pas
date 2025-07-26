@@ -19,8 +19,8 @@
   HTMX.
 
   ***************************************************************************
-  File last update : 2025-07-26T19:22:46.000+02:00
-  Signature : 66b6beb2b2f1973163a65adaac9a3c6c8b603479
+  File last update : 2025-07-26T19:59:38.000+02:00
+  Signature : e4b8ec79813264bbf2e01ae2977b08a0a3d75a76
   ***************************************************************************
 *)
 
@@ -48,7 +48,7 @@ type
 
     procedure SendEmptyContent( aResponse: TWebResponse );
   public
-    procedure InitializeActions( aWebStencil: TWebStencilsEngine ); virtual;
+    procedure InitializeActions( aWebModule: TWebModule; aWebStencil: TWebStencilsEngine ); virtual;
     procedure CheckSession( Request: TWebRequest );
   end;
 
@@ -67,7 +67,7 @@ begin
   end;
 end;
 
-procedure TBaseController.InitializeActions( aWebStencil: TWebStencilsEngine );
+procedure TBaseController.InitializeActions( aWebModule: TWebModule; aWebStencil: TWebStencilsEngine );
 begin
   try
     FWebStencilsEngine := aWebStencil;
